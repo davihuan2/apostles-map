@@ -876,14 +876,102 @@
         name: "保羅",
         color: "#f59e0b",
         stops: [
-          { city: "jerusalem", start: 30, end: 34, months: 12, source: "canon", ref: "徒 7:58–8:3; 22:3", title: "青年時期與早期逼迫教會", desc: "在耶路撒冷受迦瑪列門下訓練，初期參與反對早期信徒的行動，隨後前往大馬士革。" },
-          { city: "damascus",  start: 34, end: 37, months: 30, source: "canon", ref: "徒 9:1–25; 加 1:17–18", title: "歸信基督與阿拉伯曠野沉潛", desc: "往大馬士革途中遇見復活的主，受洗後在當地與阿拉伯地區沉潛約三年，確立外邦使徒呼召。" },
-          { city: "antioch",   start: 43, end: 49, months: 36, source: "canon", ref: "徒 11:25–26; 13:1–3", title: "敘利亞安提阿教會的核心教師", desc: "與巴拿巴在安提阿牧養教會、建立外邦宣教基地，信徒首次在此被稱為「基督徒」，並由此出發多次宣教。" },
-          { city: "cyprus",    start: 47, end: 48, months: 4,  source: "canon", ref: "徒 13:4–12", title: "第一次宣教旅程首站", desc: "從西流基航向塞浦路斯，走訪撒拉米與帕弗，與巴拿巴同行傳講福音並面對行邪術的以呂馬。" },
-          { city: "corinth",   start: 50, end: 52, months: 18, source: "canon", ref: "徒 18:1–18", title: "哥林多一年半駐留與書信事工", desc: "與亞居拉、百基拉同工織帳篷維生，在哥林多停留一年半，建立穩固群體並寫下帖撒羅尼迦前後書。" },
-          { city: "ephesus",   start: 53, end: 56, months: 30, source: "canon", ref: "徒 19:1–41", title: "以弗所約兩年半深度牧養", desc: "第三次宣教旅程長期駐留以弗所，在推喇奴學房辯道與教導，使亞細亞省眾人聽聞福音，後引發銀匠暴動。" },
-          { city: "rome",      start: 60, end: 64, months: 36, source: "canon", ref: "徒 28:16–31; 提後 4:6–8", title: "羅馬軟禁與晚期書信見證", desc: "上訴凱撒後押解抵羅馬，初期在租屋處自由接待訪客傳道約兩年，後於帝國逼迫中殉道（傳統約 64–67 年）。" },
-          { city: "spain",     start: 62, end: 64, months: 12, source: "trad",  ref: "羅 15:24, 28; 羅馬革利免一書", title: "西行至「地極（西班牙）」傳統推估", desc: "保羅曾表達前往西班牙的計畫；早期教會文獻記載他獲釋後可能曾往西方傳道，屬教會傳統推估。" }
+          {
+            city: "jerusalem",
+            start: 30,
+            end: 34,
+            months: 12,
+            source: "canon",
+            ref: "徒 7:58–8:3; 9:1–2; 22:3; 26:9–11; 加 1:13–14",
+            durationBasis: "經文未載確切月數，此為青年受訓至早期逼迫階段之歷史推估區間。",
+            basisNote: "正典明確記載保羅（原名掃羅）在耶路撒冷受迦瑪列門下嚴格律法訓練，並參與反對早期信徒群體之行動；確切西元年份屬學界依大馬士革歸信與亞哩達四世事件反推之區間。",
+            title: "耶路撒冷受訓與早期反對教會行動",
+            desc: "在耶路撒冷受迦瑪列教導，熱心維護猶太傳統並逼迫早期基督徒群體，隨後領受大祭司文書前往大馬士革搜捕信徒。"
+          },
+          {
+            city: "damascus",
+            start: 34,
+            end: 37,
+            months: 30,
+            source: "canon",
+            ref: "徒 9:1–25; 22:6–16; 26:12–18; 加 1:15–18",
+            durationBasis: "《加拉太書》1:18 記載「過了三年」才上耶路撒冷，此處以約 30 個月作為大馬士革與阿拉伯階段之估算。",
+            basisNote: "正典結合《使徒行傳》與《加拉太書》1:17–18：保羅在大馬士革歸信、受洗並開始講道，期間曾往阿拉伯地區後再返回大馬士革，三年後才上耶路撒冷見磯法與雅各。",
+            title: "大馬士革歸信、阿拉伯階段與三年沉潛",
+            desc: "往大馬士革途中遇見復活的基督而歸信，在當地受洗並傳講耶穌；依《加拉太書》記載，其間亦曾往阿拉伯地區，約三年後才返回耶路撒冷與使徒會面。"
+          },
+          {
+            city: "antioch",
+            start: 43,
+            end: 49,
+            months: 36,
+            source: "canon",
+            ref: "徒 11:25–26; 13:1–3; 14:26–28; 15:35; 加 2:11–14",
+            durationBasis: "《使徒行傳》11:26 載「足有一年」與眾人一同教訓人，加上宣教旅程間歇駐留，此處以 36 個月作為核心駐留估算。",
+            basisNote: "正典明確將敘利亞安提阿描繪為外邦宣教起點與核心基地：巴拿巴從大數尋得保羅帶往安提阿，信徒首次在此被稱為「基督徒」，此後多次宣教皆由此出發與返回。",
+            title: "敘利亞安提阿教會建立與外邦宣教基地",
+            desc: "巴拿巴將保羅帶到敘利亞安提阿一同教導群體，信徒首次在此被稱為「基督徒」；此地不僅成為外邦宣教差派中心，也是保羅多次宣教旅程出發與回報的據點。"
+          },
+          {
+            city: "cyprus",
+            start: 47,
+            end: 48,
+            months: 4,
+            source: "canon",
+            ref: "徒 13:4–12",
+            durationBasis: "經文未載停留天數，此處以短暫航行與橫跨島嶼傳道之 4 個月作為估算。",
+            basisNote: "正典《使徒行傳》13:4–12 記載保羅與巴拿巴受聖靈差派，從西流基下船航向塞浦路斯，自東岸撒拉米宣講至西岸帕弗，遇見方伯士求保羅與行法術的巴耶穌（以呂馬）。",
+            title: "第一次宣教旅程：塞浦路斯（撒拉米至帕弗）",
+            desc: "受安提阿教會差派自西流基出海抵達塞浦路斯，沿島從東部的撒拉米傳道至西部的帕弗，在當地見證方伯士求保羅信主並應對以呂馬的阻攔。"
+          },
+          {
+            city: "corinth",
+            start: 50,
+            end: 52,
+            months: 18,
+            source: "canon",
+            ref: "徒 18:1–18; 林前 1:14–17; 帖前 1:1; 3:6",
+            durationBasis: "《使徒行傳》18:11 明載「在哥林多住了一年零六個月」，即 18 個月，屬正典有明確時間長度線索之站點。",
+            basisNote: "正典《使徒行傳》18:11 直接記載保羅在哥林多駐留「一年零六個月（18 個月）」教導神的話，並遇見亞居拉與百基拉、在迦流任亞該亞方伯時期受猶太人控告。",
+            title: "哥林多一年半駐留與書信事工",
+            desc: "在哥林多與同為製造帳篷工匠的亞居拉、百基拉同住同工，每安息日在會堂辯論並駐留一年半建立群體，期間亦與提摩太、西拉同工推进書信事工。"
+          },
+          {
+            city: "ephesus",
+            start: 53,
+            end: 56,
+            months: 30,
+            source: "canon",
+            ref: "徒 19:1–41; 20:31; 林前 15:32; 16:8",
+            durationBasis: "《使徒行傳》19:8–10 載推喇奴學房辯論「兩年」，加上前後駐留，20:31 稱「三年之久」（修辭整數），此處以 30 個月估算。",
+            basisNote: "正典《使徒行傳》19 章記載保羅在以弗所按手使門徒受聖靈，先在會堂講道三個月，後在推喇奴學房天天辯論兩年，使亞細亞全地聽見主道，最終引發底米丟與銀匠騷動。",
+            title: "以弗所推喇奴學房講論與亞細亞事工",
+            desc: "第三次宣教旅程深入以弗所，先在會堂講道，後轉入推喇奴學房持續教導辯論，使住亞細亞的猶太人與希臘人都聽見福音，直至銀匠暴動後才離開。"
+          },
+          {
+            city: "rome",
+            start: 60,
+            end: 64,
+            months: 36,
+            source: "canon",
+            ref: "徒 28:16–31; 腓 1:12–14; 門 1, 9–10; 提後 4:6–8",
+            durationBasis: "《使徒行傳》28:30 載「自己在租的房子裡住了足足兩年」（24 個月），此處以 24–36 個月涵蓋軟禁與晚期書信階段推估。",
+            basisNote: "正典《使徒行傳》28:16–31 記載保羅被押解至羅馬後，獲准在自己租的房子裡住兩年，接待前來的人傳講神國的道；《提摩太後書》則反映其晚期再度受捆鎖與面對離世的心境（殉道年代屬傳統推估）。",
+            title: "羅馬軟禁兩年與晚期書信見證",
+            desc: "經海路押解抵達羅馬，在百夫長看守與自有住處的條件下住了足足兩年，放膽傳講神國並教導主耶穌基督的事，期間亦與腓利門、阿尼西母及多位同工往來。"
+          },
+          {
+            city: "spain",
+            start: 62,
+            end: 64,
+            months: 12,
+            source: "trad",
+            ref: "羅 15:24, 28; 羅馬革利免一書 5:7",
+            durationBasis: "經文僅載計畫與願望，無停留月數記載，此處 12 個月為教會傳統推估之示意數值。",
+            basisNote: "正典《羅馬書》15:24、28 記載保羅表達盼望往西班牙去、並路過羅馬得眾人送行，但新約本身未記載他已抵達西班牙；羅馬革利免一書（約 96 AD）提及他「往西方去到了地極」，屬早期教會傳統推估。",
+            title: "西行西班牙計畫與早期教會傳統推估",
+            desc: "保羅在《羅馬書》中明確提及前往西班牙的宣教心願；新約正典止於羅馬租屋處兩年，至於其後是否獲釋並西行至西班牙，則屬早期教會文獻與傳統推估。"
+          }
         ]
       },
       {
@@ -891,9 +979,42 @@
         name: "彼得",
         color: "#38bdf8",
         stops: [
-          { city: "jerusalem", start: 30, end: 43, months: 96, source: "canon", ref: "徒 1–12 章; 加 2:7–9", title: "耶路撒冷初期教會柱石", desc: "五旬節講道帶領多人信主，長期在耶路撒冷與猶太信徒群體中帶領牧養，直到希律逼迫與蒙天使救出。" },
-          { city: "antioch",   start: 44, end: 50, months: 18, source: "canon", ref: "加 2:11–14", title: "安提阿與外邦信徒共餐互動", desc: "曾前往敘利亞安提阿與當地信徒往來，並在飲食與律法界線議題上與保羅有坦率對話。" },
-          { city: "rome",      start: 58, end: 65, months: 48, source: "trad",  ref: "彼前 5:13; 早期教會傳統", title: "羅馬晚年牧養與殉道見證", desc: "早期教會傳統普遍記載彼得晚年在羅馬服事並殉道；書信中提及「在巴比倫的教會」常被解讀為羅馬的隱喻。" }
+          {
+            city: "jerusalem",
+            start: 30,
+            end: 43,
+            months: 96,
+            source: "canon",
+            ref: "徒 1:15–2:41; 3:1–5:42; 8:14–25; 12:1–17; 加 2:7–9",
+            durationBasis: "經文未載確切總月數，此處 96 個月為五旬節至希律逼迫離城前長期在耶路撒冷事工之推估。",
+            basisNote: "正典《使徒行傳》1–12 章多處記載彼得在耶路撒冷的帶領與見證：五旬節講道、醫治美門瘸子、在公會前見證、往撒馬利亞按手，以及在希律逼迫下蒙主差使者救出後離開該地。",
+            title: "耶路撒冷初期教會柱石與見證",
+            desc: "自五旬節起在耶路撒冷公開見證基督復活，帶領多人信主並與約翰等使徒同工牧養初期群體，直到希律亞基帕一世逼迫、被囚蒙救出後往別處去。"
+          },
+          {
+            city: "antioch",
+            start: 44,
+            end: 50,
+            months: 18,
+            source: "canon",
+            ref: "加 2:11–14",
+            durationBasis: "經文未載具體停留月數，此處以 18 個月作為往來安提阿互動階段之推估。",
+            basisNote: "正典《加拉太書》2:11–14 明確記載磯法（彼得）曾來到敘利亞安提阿，起初與外邦信徒一同吃飯，後來因從雅各那裡來的人來到，便退去與受割禮的人隔開，保羅當面指出其行為與福音真理不合。",
+            title: "敘利亞安提阿與外邦信徒共餐互動",
+            desc: "彼得曾前往敘利亞安提阿與當地信徒往來，初期與外邦信徒共餐，後因顧慮從耶路撒冷來者的立場而退縮，保羅為此在眾人面前與他坦誠辯明。"
+          },
+          {
+            city: "rome",
+            start: 58,
+            end: 65,
+            months: 48,
+            source: "trad",
+            ref: "彼前 5:13; 優西比烏《教會史》2.25; 早期教會傳統",
+            durationBasis: "經文無確切月數記載，此處 48 個月為早期教會傳統推估之晚年駐留示意數值。",
+            basisNote: "正典《彼得前書》5:13 提及「在巴比倫與你們同蒙揀選的教會問你們安」，許多解經家與早期教會傳統將此處的「巴比倫」解讀為羅馬的隱喻；彼得在羅馬服事與殉道主要依據早期教會傳統。",
+            title: "羅馬晚年事工與殉道傳統推估",
+            desc: "早期教會傳統普遍記載彼得晚年來到羅馬牧養信徒並殉道；《彼得前書》結尾所稱「在巴比倫的教會」常被解讀為指涉羅馬群體，屬正典隱喻與教會傳統交會之議題。"
+          }
         ]
       },
       {
@@ -901,9 +1022,42 @@
         name: "約翰",
         color: "#a78bfa",
         stops: [
-          { city: "jerusalem", start: 30, end: 52, months: 144, source: "canon", ref: "徒 3–4; 8:14; 加 2:9", title: "耶路撒冷早期核心使徒", desc: "與彼得同工醫治與見證，曾奉差往撒馬利亞按手使人領受聖靈，並被保羅稱為教會的「柱石」之一。" },
-          { city: "ephesus",   start: 65, end: 94, months: 180, source: "trad",  ref: "愛任紐《反異端》; 教會史", title: "以弗所長期牧養與約翰書信傳統", desc: "教會傳統記載約翰晚年定居以弗所，牧養亞細亞眾教會、寫下約翰福音與書信，並守護群體信仰純正。" },
-          { city: "patmos",    start: 94, end: 97, months: 24,  source: "canon", ref: "啟 1:9", title: "拔摩海島流放與《啟示錄》異象", desc: "在羅馬帝國政權逼迫下被流放至愛琴海的拔摩海島，領受並寫下給亞細亞七教會的《啟示錄》。" }
+          {
+            city: "jerusalem",
+            start: 30,
+            end: 52,
+            months: 144,
+            source: "canon",
+            ref: "徒 3:1–4:31; 8:14–17; 加 2:9",
+            durationBasis: "經文未載確切月數，此處 144 個月為早期耶路撒冷核心事工階段之歷史推估。",
+            basisNote: "正典《使徒行傳》與《加拉太書》2:9 記載約翰與彼得同工、奉差往撒馬利亞為信徒禱告按手，並與雅各、磯法被保羅稱為教會公認的「柱石」。",
+            title: "耶路撒冷早期使徒與教會「柱石」",
+            desc: "與彼得一同在耶路撒冷宣講與醫治、面對公會盤問，並曾前往撒馬利亞協助信徒領受聖靈，在早期猶太基督徒群體中具有核心地位。"
+          },
+          {
+            city: "ephesus",
+            start: 65,
+            end: 94,
+            months: 180,
+            source: "trad",
+            ref: "愛任紐《反異端》3.1.1, 3.3.4; 優西比烏《教會史》",
+            durationBasis: "新約正典未記載約翰晚年定居以弗所的月數，此處 180 個月為教會傳統推估之長期牧養示意數值。",
+            basisNote: "新約正典未直接敘述約翰在以弗所的行程；約翰晚年長期駐留以弗所、牧養亞細亞眾教會並撰寫約翰福音與書信，主要來自愛任紐等二世紀以後教會教父與教會史傳統。",
+            title: "以弗所長期牧養與約翰傳統（教會史推估）",
+            desc: "依愛任紐與早期教會史傳統記載，約翰晚年定居小亞細亞的以弗所牧養眾教會並留下約翰文獻傳統；此段屬於教會傳統推估，非《使徒行傳》直接記載。"
+          },
+          {
+            city: "patmos",
+            start: 94,
+            end: 97,
+            months: 24,
+            source: "canon",
+            ref: "啟 1:9",
+            durationBasis: "《啟示錄》未載確切流放月數，此處 24 個月為圖米提安或晚期帝國逼迫時期之推估區間。",
+            basisNote: "正典《啟示錄》1:9 明確記載約翰「為神的道，並為給耶穌作的見證，曾在那名叫拔摩的海島上」；具體流放年份（多數傳統歸於多米提安在位末期，約 90年代中期）屬歷史年代推估。",
+            title: "拔摩海島流放與《啟示錄》見證",
+            desc: "正典《啟示錄》直接證實約翰因神的道與為耶穌作見證而被流放在拔摩海島，並在主日領受異象，寫信給亞細亞七間教會。"
+          }
         ]
       },
       {
@@ -911,10 +1065,54 @@
         name: "馬可",
         color: "#34d399",
         stops: [
-          { city: "jerusalem", start: 30, end: 44, months: 60, source: "canon", ref: "徒 12:12", title: "耶路撒冷母親馬利亞家聚會中心", desc: "約翰馬可的家在耶路撒冷是早期信徒聚集禱告的重要場所，彼得脫險後也曾前往該處。" },
-          { city: "antioch",   start: 45, end: 47, months: 18, source: "canon", ref: "徒 12:25; 13:5, 13", title: "隨巴拿巴與保羅展開宣教", desc: "自耶路撒冷隨巴拿巴與保羅到安提阿，並於第一次宣教旅程初期擔任幫手，後在旁非利亞折返。" },
-          { city: "rome",      start: 60, end: 65, months: 36, source: "canon", ref: "西 4:10; 門 24; 提後 4:11", title: "在羅馬與保羅、彼得同工並撰寫福音", desc: "與保羅和好並成為得力同工；教會傳統指出他在羅馬整理彼得宣講記憶，寫成《馬可福音》。" },
-          { city: "alexandria",start: 62, end: 68, months: 48, source: "trad",  ref: "優西比烏《教會史》", title: "亞歷山卓教會創立傳統", desc: "早期教會傳統認為馬可前往埃及亞歷山卓傳道並建立當地教會，成為埃及科普特教會的重要源頭。" }
+          {
+            city: "jerusalem",
+            start: 30,
+            end: 44,
+            months: 60,
+            source: "canon",
+            ref: "徒 12:12, 25",
+            durationBasis: "經文未載確切月數，此處 60 個月為早期耶路撒冷家庭聚會與成長階段推估。",
+            basisNote: "正典《使徒行傳》12:12 記載彼得蒙救出後往「那稱為馬可的約翰他母親馬利亞家去，在那裡有好些人聚集禱告」；12:25 記載巴拿巴與保羅辦完耶路撒冷賑濟事工後帶約翰馬可同去。",
+            title: "耶路撒冷母親馬利亞家聚會與同行起點",
+            desc: "約翰馬可的母親馬利亞在耶路撒冷設有信徒聚集禱告的居所，彼得脫險後曾前往該處；隨後馬可隨巴拿巴與保羅離開耶路撒冷投入事工。"
+          },
+          {
+            city: "antioch",
+            start: 45,
+            end: 47,
+            months: 18,
+            source: "canon",
+            ref: "徒 12:25; 13:5, 13",
+            durationBasis: "經文未載具體月數，此處以 18 個月作為往來安提阿與初次隨行階段之估算。",
+            basisNote: "正典《使徒行傳》12:25 與 13:5、13 記載馬可隨巴拿巴與保羅到安提阿，在塞浦路斯的撒拉米擔任幫手，隨後在旁非利亞的別加離開他們回到耶路撒冷。",
+            title: "隨巴拿巴與保羅往來安提阿及初次宣教",
+            desc: "自耶路撒冷隨巴拿巴與保羅前往安提阿，並在第一次宣教旅程初期擔任同工幫手，後於旁非利亞折返耶路撒冷。"
+          },
+          {
+            city: "rome",
+            start: 60,
+            end: 65,
+            months: 36,
+            source: "canon",
+            ref: "西 4:10; 門 24; 提後 4:11; 彼前 5:13",
+            durationBasis: "經文無固定月數記載，此處 36 個月為書信同工與晚期傳統連結之推估區間。",
+            basisNote: "正典《歌羅西書》4:10、《腓利門書》24 與《提摩太後書》4:11 顯示馬可與保羅在囚禁／事工晚期密切同工並受保羅肯定；《彼得前書》5:13 亦稱他為「我兒子馬可」，而馬可記錄彼得講道成《馬可福音》則來自帕皮亞斯與早期教會傳統。",
+            title: "與保羅、彼得同工線索及福音書傳統",
+            desc: "新約書信顯示馬可與保羅重修舊好並成為得力同工，亦與彼得關係親密；早期教會傳統進一步指出他在羅馬整理彼得宣講記憶，寫成《馬可福音》。"
+          },
+          {
+            city: "alexandria",
+            start: 62,
+            end: 68,
+            months: 48,
+            source: "trad",
+            ref: "優西比烏《教會史》2.16.1; 早期教會傳統",
+            durationBasis: "新約正典無埃及亞歷山卓記載，此處 48 個月為教會傳統推估之示意數值。",
+            basisNote: "新約正典未記載馬可前往埃及；馬可前往埃及亞歷山卓傳道並建立當地教會，是優西比烏《教會史》與早期教會傳統的記載，屬傳統推估路線。",
+            title: "埃及亞歷山卓教會創立傳統（教會史推估）",
+            desc: "依優西比烏與早期教會傳統，馬可曾前往埃及亞歷山卓傳揚福音並建立群體；此路線屬教會史傳統推估，非新約正典明文。"
+          }
         ]
       },
       {
@@ -922,7 +1120,18 @@
         name: "主耶穌的兄弟雅各",
         color: "#f472b6",
         stops: [
-          { city: "jerusalem", start: 34, end: 62, months: 240, source: "canon", ref: "徒 12:17; 15:13; 加 1:19; 2:9", title: "耶路撒冷教會長期領袖", desc: "復活後蒙主顯現而歸信，長期駐守耶路撒冷，在耶路撒冷會議中提出決議原則，深具猶太基督徒群體影響力。" }
+          {
+            city: "jerusalem",
+            start: 34,
+            end: 62,
+            months: 240,
+            source: "canon",
+            ref: "林前 15:7; 徒 12:17; 15:13–21; 21:18; 加 1:19; 2:9, 12",
+            durationBasis: "經文未載確切月數，此處 240 個月為耶路撒冷長期領導階段之歷史推估。",
+            basisNote: "正典《哥林多前書》15:7 載復活的主曾向雅各顯現；《使徒行傳》15 章與《加拉太書》1:19、2:9 顯示雅各長期在耶路撒冷居於重要領導地位，並在耶路撒冷會議提出決議。",
+            title: "耶路撒冷教會長期領袖與耶路撒冷會議",
+            desc: "在耶路撒冷教會扮演關鍵帶領角色，於外邦人歸信與律法要求的爭議（耶路撒冷會議）中提出清楚決議，並與保羅、彼得並列為教會柱石。"
+          }
         ]
       },
       {
@@ -930,9 +1139,42 @@
         name: "巴拿巴",
         color: "#fb923c",
         stops: [
-          { city: "jerusalem", start: 32, end: 42, months: 48, source: "canon", ref: "徒 4:36–37; 9:27", title: "慷慨奉獻與引薦保羅", desc: "原名約瑟，賣田產奉獻使徒腳前，並在保羅剛歸信、眾人存疑時挺身向使徒引薦保羅。" },
-          { city: "antioch",   start: 42, end: 49, months: 48, source: "canon", ref: "徒 11:22–26; 13:1", title: "安提阿教會拓荒與帶領者", desc: "受耶路撒冷教會差派到安提阿，見證外邦人歸主並前往大數尋找保羅一同牧養教會。" },
-          { city: "cyprus",    start: 47, end: 51, months: 24, source: "canon", ref: "徒 13:4; 15:39", title: "塞浦路斯宣教與後續同行", desc: "家鄉在塞浦路斯，多次前往當地傳揚福音；與保羅因馬可一事分道後，仍持續在塞浦路斯事工。" }
+          {
+            city: "jerusalem",
+            start: 32,
+            end: 42,
+            months: 48,
+            source: "canon",
+            ref: "徒 4:36–37; 9:27",
+            durationBasis: "經文未載確切月數，此處 48 個月為早期耶路撒冷事工與引薦保羅階段推估。",
+            basisNote: "正典《使徒行傳》4:36–37 記載利未人約瑟被使徒稱為巴拿巴，賣田產交於使徒腳前；9:27 記載保羅歸信初返耶路撒冷時，惟有巴拿巴接待並向使徒引薦他。",
+            title: "耶路撒冷奉獻見證與引薦保羅",
+            desc: "在耶路撒冷早期群體中以勸慰與慷慨奉獻著稱，並在保羅剛歸信、眾人尚有疑慮時挺身向使徒引薦，促成保羅融入信徒群體。"
+          },
+          {
+            city: "antioch",
+            start: 42,
+            end: 49,
+            months: 48,
+            source: "canon",
+            ref: "徒 11:22–26; 13:1–3; 15:2, 22, 35",
+            durationBasis: "經文未載確切月數，此處 48 個月為安提阿拓荒與牧養階段推估。",
+            basisNote: "正典《使徒行傳》11:22–26 記載耶路撒冷教會打發巴拿巴往安提阿去，他見證神所賜的恩便歡喜勸勉眾人，又往大數找保羅同在安提阿教導一年，並與保羅一同受差派。",
+            title: "敘利亞安提阿拓荒牧養與受差派",
+            desc: "受耶路撒冷教會差派來到敘利亞安提阿，見證外邦人歸主並前往大數尋得保羅一同牧養教會，隨後與保羅同被聖靈差派展開宣教旅程。"
+          },
+          {
+            city: "cyprus",
+            start: 47,
+            end: 51,
+            months: 24,
+            source: "canon",
+            ref: "徒 4:36; 13:4–12; 15:39",
+            durationBasis: "經文未載確切月數，此處 24 個月為塞浦路斯宣教與後續同行階段推估。",
+            basisNote: "正典《使徒行傳》4:36 載巴拿巴本是塞浦路斯人；13:4–12 載他與保羅在塞浦路斯傳道；15:39 載他與保羅因帶馬可的事分歧後，帶著馬可坐船往塞浦路斯去。",
+            title: "家鄉塞浦路斯宣教與分道後同行",
+            desc: "身為塞浦路斯人，先與保羅一同在塞浦路斯傳講神道；後於安提阿因是否帶馬可同行與保羅分道，隨即帶著馬可航向塞浦路斯持續事工。"
+          }
         ]
       },
       {
@@ -940,8 +1182,30 @@
         name: "腓力（傳福音的）",
         color: "#2dd4bf",
         stops: [
-          { city: "jerusalem", start: 30, end: 35, months: 24, source: "canon", ref: "徒 6:5; 8:1", title: "七位執事之一與早期服事", desc: "在耶路撒冷被選為管理飯食與關懷需要的七位同工之一，具備好名聲、智慧與聖靈充滿。" },
-          { city: "damascus",  start: 36, end: 45, months: 36, source: "canon", ref: "徒 8:26–40", title: "沿海宣教路線與埃塞俄比亞太監", desc: "沿猶太沿海城鎮傳道，在往迦薩路上向埃塞俄比亞太監講解《以賽亞書》並為其施洗，隨後一路傳至該撒利亞。" }
+          {
+            city: "jerusalem",
+            start: 30,
+            end: 35,
+            months: 24,
+            source: "canon",
+            ref: "徒 6:5; 8:1, 5",
+            durationBasis: "經文未載確切月數，此處 24 個月為耶路撒冷執事服事至逼迫分散前推估。",
+            basisNote: "正典《使徒行傳》6:5 記載腓力是耶路撒冷眾門徒挑選出管理飯食與服事的七人之一，具備好名聲、智慧與聖靈充滿；8:1、5 記載耶路撒冷大遭逼迫後，門徒分散，腓力下撒馬利亞宣講基督。",
+            title: "耶路撒冷七位同工之一與早期服事",
+            desc: "在耶路撒冷被選為七位同工之一，參與早期教會日常關懷與服事；後因耶路撒冷逼迫興起，門徒四散，腓力由此展開向外傳福音的行動。"
+          },
+          {
+            city: "damascus",
+            start: 36,
+            end: 45,
+            months: 36,
+            source: "canon",
+            ref: "徒 8:26–40; 21:8",
+            durationBasis: "經文未載確切月數，此處 36 個月為沿海傳道與該撒利亞定居階段推估（註：地圖節點暫借敘利亞／黎凡特東岸座標呈現，詳見考據說明）。",
+            basisNote: "正典《使徒行傳》8:26–40 記載主使者吩咐腓力往南下迦薩的路去，向埃塞俄比亞太監講解《以賽亞書》並為其施洗，隨後從亞鎖都走遍各城直到該撒利亞；21:8 稱他為「傳福音的腓力」，住在該撒利亞。",
+            title: "沿海宣教、埃塞俄比亞太監與該撒利亞事工",
+            desc: "正典記載腓力在往迦薩路上向埃塞俄比亞太監傳講耶穌並施洗，隨後沿沿海城鎮一路傳道至該撒利亞並定居該地（地圖此節點係借用黎凡特區域座標顯示，實際經文路線以猶太沿海至該撒利亞為主）。"
+          }
         ]
       },
       {
@@ -949,8 +1213,30 @@
         name: "安得烈",
         color: "#60a5fa",
         stops: [
-          { city: "jerusalem", start: 30, end: 38, months: 36, source: "canon", ref: "徒 1:13", title: "耶路撒冷初期門徒群體", desc: "身為最早跟隨耶穌的門徒之一，復活後與其他門徒在耶路撒冷同心禱告等候並見證復活。" },
-          { city: "blacksea",  start: 45, end: 65, months: 120, source: "trad",  ref: "優西比烏《教會史》; 早期傳統", title: "黑海與小亞細亞北部傳道傳統", desc: "教會傳統記載安得烈往北至黑海沿岸與希臘地區傳道，向希臘文化圈群體見證福音。" }
+          {
+            city: "jerusalem",
+            start: 30,
+            end: 38,
+            months: 36,
+            source: "canon",
+            ref: "約 1:40–44; 徒 1:13",
+            durationBasis: "經文未載確切月數，此處 36 個月為耶路撒冷初期群體階段推估。",
+            basisNote: "正典《使徒行傳》1:13 明確將安得烈列在耶路撒冷樓上同心合意禱告的使徒名單中；其後《使徒行傳》對安得烈個人行程記載甚少。",
+            title: "耶路撒冷初期門徒群體",
+            desc: "身為最早跟隨耶穌的門徒之一，復活後與其他使徒在耶路撒冷聚集禱告，見證耶穌復活與初期教會的建立。"
+          },
+          {
+            city: "blacksea",
+            start: 45,
+            end: 65,
+            months: 120,
+            source: "trad",
+            ref: "優西比烏《教會史》3.1; 早期教會傳統",
+            durationBasis: "新約正典無黑海地區記載，此處 120 個月為教會傳統推估之示意數值。",
+            basisNote: "新約正典未記載安得烈前往黑海沿岸；優西比烏引述早期教會傳統指出安得烈在「西古提亞（Scythia）」一帶傳道，後世傳統常將其與黑海及希臘地區傳道連結，屬傳統推估。",
+            title: "黑海與北方地區傳道傳統（教會史推估）",
+            desc: "依優西比烏與早期教會傳統，安得烈曾向北方地區（傳統常聯想至黑海沿岸與希臘一帶）傳揚福音；此路線屬教會傳統推估，非新約正典直接記載。"
+          }
         ]
       },
       {
@@ -958,8 +1244,30 @@
         name: "多馬",
         color: "#facc15",
         stops: [
-          { city: "jerusalem", start: 30, end: 38, months: 36, source: "canon", ref: "約 20:24–29; 徒 1:13", title: "從懷疑到宣告「我的主、我的神」", desc: "復活初期親眼見證並宣告信仰，隨後與眾門徒在耶路撒冷一同參與早期教會生活。" },
-          { city: "damascus",  start: 40, end: 52, months: 72, source: "trad",  ref: "敘利亞教會傳統", title: "敘利亞與美索不達米亞東方路線", desc: "東方教會傳統記載多馬往敘利亞、帕提亞等東方地區傳道（之後更向印度延伸），在敘利亞教會擁有極高地位。" }
+          {
+            city: "jerusalem",
+            start: 30,
+            end: 38,
+            months: 36,
+            source: "canon",
+            ref: "約 20:24–29; 徒 1:13",
+            durationBasis: "經文未載確切月數，此處 36 個月為耶路撒冷初期群體階段推估。",
+            basisNote: "正典《約翰福音》20:24–29 記載多馬在耶路撒冷見證復活的主並宣告「我的主，我的神」；《使徒行傳》1:13 列入耶路撒冷使徒名單。",
+            title: "耶路撒冷見證復活與初期群體",
+            desc: "在耶路撒冷親眼見證復活的主並發出信仰宣告，隨後與眾使徒一同留在耶路撒冷參與早期教會生活。"
+          },
+          {
+            city: "damascus",
+            start: 40,
+            end: 52,
+            months: 72,
+            source: "trad",
+            ref: "優西比烏《教會史》3.1; 敘利亞教會傳統",
+            durationBasis: "新約正典無敘利亞／東方宣教行程記載，此處 72 個月為教會傳統推估之示意數值。",
+            basisNote: "新約正典未記載多馬往敘利亞或東方傳道；優西比烏《教會史》3.1 記載多馬分得「帕提亞（Parthia）」地區，敘利亞教會傳統亦高度尊崇多馬，屬教會傳統推估（地圖此處借用黎凡特／敘利亞區域座標呈現）。",
+            title: "敘利亞與東方傳道傳統（教會史推估）",
+            desc: "依優西比烏與敘利亞教會傳統，多馬往敘利亞與帕提亞等東方地區傳道；此段屬教會傳統推估，非新約正典明文（地圖借用敘利亞／黎凡特座標呈現）。"
+          }
         ]
       }
     ];
@@ -1251,7 +1559,7 @@
       nextStepBtn.disabled = safeIdx >= stops.length - 1;
 
       const sourceClass = stop.source === "canon" ? "pill-source-canon" : "pill-source-trad";
-      const sourceLabel = stop.source === "canon" ? "正典／早期文獻記載" : "教會傳統推估（虛線）";
+      const sourceLabel = stop.source === "canon" ? "新約正典經文依據" : "教會傳統推估參照（虛線）";
 
       let concurrentHtml = "";
       const others = selected.filter(a => a.id !== activeApostle.id);
@@ -1274,16 +1582,18 @@
           const oStop = matched.stop;
           const oCity = CITIES[oStop.city];
           const isExact = matched.mode === "active";
+          const oSrcText = oStop.source === "canon" ? "正典" : "傳統推估";
           return `
             <div class="concurrent-card ${isExact ? "" : "inactive-period"}" style="border-left-color:${otherAp.color};" data-ap-id="${otherAp.id}" data-stop-idx="${matched.index}" data-start-year="${oStop.start}">
               <div class="concurrent-card-top">
-                <span>${otherAp.name}・第 ${matched.index + 1} 站</span>
+                <span>${otherAp.name}・第 ${matched.index + 1} 站（${oSrcText}）</span>
                 <span class="concurrent-status-tag ${isExact ? "status-active-year" : "status-nearest-year"}">
                   ${isExact ? `${refYear} AD 同期` : `鄰近 ${oStop.start}–${oStop.end} AD`}
                 </span>
               </div>
-              <div class="concurrent-sub">${oCity ? oCity.name : ""}（${oStop.start}–${oStop.end} AD｜約 ${oStop.months} 個月）</div>
+              <div class="concurrent-sub">${oCity ? oCity.name : ""}（${oStop.start}–${oStop.end} AD｜估算約 ${oStop.months} 個月）</div>
               <div class="concurrent-desc"><strong>${oStop.title}：</strong>${oStop.desc}</div>
+              <div class="concurrent-desc" style="margin-top:4px; font-size:12.5px; color:var(--text-muted);">經文／文獻：${oStop.ref}</div>
             </div>
           `;
         }).join("");
@@ -1291,7 +1601,7 @@
         concurrentHtml = `
           <div class="concurrent-section">
             <div class="concurrent-title">
-              <span>其他已勾選使徒同期／相近階段行動（基準年份：${refYear} AD）</span>
+              <span>其他已勾選使徒同期／相近階段視野（基準年份：${refYear} AD）</span>
               <span style="font-size:12.5px; color:var(--text-muted); font-weight:500;">點擊卡片可切換為主焦點站點</span>
             </div>
             <div class="concurrent-grid">${cardsHtml}</div>
@@ -1304,13 +1614,17 @@
           <span class="pill-tag" style="background:${activeApostle.color}26; color:${activeApostle.color}; border-color:${activeApostle.color}88;">
             ${activeApostle.name}・第 ${safeIdx + 1} 站（主焦點）
           </span>
-          <span class="pill-tag">${city ? city.name : ""}（約 ${stop.start}–${stop.end} AD）</span>
-          <span class="pill-tag">停留約 ${stop.months} 個月</span>
+          <span class="pill-tag">${city ? city.name : ""}（推估約 ${stop.start}–${stop.end} AD）</span>
+          <span class="pill-tag">停留估算約 ${stop.months} 個月</span>
           <span class="pill-tag ${sourceClass}">${sourceLabel}</span>
         </div>
         <div class="narrative-heading">${stop.title}</div>
         <p>${stop.desc}</p>
-        <p style="margin-top:6px; font-size:14px; color:var(--text-muted);">文獻／經文依據：${stop.ref}</p>
+        <div style="margin-top:10px; padding:10px 12px; border-radius:8px; background:rgba(15,23,42,0.55); border:1px solid var(--border-subtle); font-size:14.5px; color:var(--text-secondary);">
+          <div style="margin-bottom:4px;"><strong style="color:#f8fafc;">經文／文獻出處：</strong>${stop.ref}</div>
+          <div style="margin-bottom:4px;"><strong style="color:#f8fafc;">考據與年代說明：</strong>${stop.basisNote || ""}</div>
+          <div><strong style="color:#f8fafc;">停留月數說明：</strong>${stop.durationBasis || ""}</div>
+        </div>
         ${concurrentHtml}
       `;
 
