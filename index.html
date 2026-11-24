@@ -21,13 +21,6 @@
       --radius-md: 10px;
       --radius-lg: 14px;
       --font-sans: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", -apple-system, BlinkMacSystemFont, sans-serif;
-
-      /* 統一全站桌機與手機一致的字級階層 */
-      --fs-h2: 18px;
-      --fs-h3: 16px;
-      --fs-body: 15px;
-      --fs-sub: 14px;
-      --fs-caption: 13px;
     }
 
     * {
@@ -42,11 +35,9 @@
       background: var(--bg-app);
       color: var(--text-primary);
       font-family: var(--font-sans);
-      font-size: var(--fs-body);
-      line-height: 1.6;
+      font-size: 16px;
+      line-height: 1.55;
       -webkit-font-smoothing: antialiased;
-      -webkit-text-size-adjust: 100%;
-      text-size-adjust: 100%;
       overflow-x: hidden;
     }
 
@@ -389,7 +380,7 @@
     }
 
     .panel-title {
-      font-size: var(--fs-h2);
+      font-size: 17px;
       font-weight: 700;
       color: var(--text-primary);
     }
@@ -423,8 +414,8 @@
     }
 
     .narrative-body {
-      font-size: var(--fs-body);
-      line-height: 1.65;
+      font-size: 17px;
+      line-height: 1.7;
       color: var(--text-secondary);
     }
 
@@ -442,7 +433,7 @@
       gap: 5px;
       padding: 3px 10px;
       border-radius: 6px;
-      font-size: var(--fs-caption);
+      font-size: 14px;
       font-weight: 700;
       background: rgba(56, 189, 248, 0.14);
       color: #7dd3fc;
@@ -462,7 +453,7 @@
     }
 
     .narrative-heading {
-      font-size: var(--fs-h2);
+      font-size: 19px;
       font-weight: 700;
       color: #ffffff;
       margin-bottom: 6px;
@@ -476,7 +467,7 @@
     }
 
     .concurrent-title {
-      font-size: var(--fs-h3);
+      font-size: 15px;
       font-weight: 700;
       color: var(--accent-cyan);
       margin-bottom: 8px;
@@ -518,7 +509,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 6px;
-      font-size: var(--fs-body);
+      font-size: 14.5px;
       font-weight: 700;
       color: var(--text-primary);
       margin-bottom: 3px;
@@ -545,16 +536,16 @@
     }
 
     .concurrent-sub {
-      font-size: var(--fs-sub);
+      font-size: 13px;
       color: var(--accent-gold);
       font-weight: 600;
       margin-bottom: 3px;
     }
 
     .concurrent-desc {
-      font-size: var(--fs-sub);
+      font-size: 13.5px;
       color: var(--text-secondary);
-      line-height: 1.55;
+      line-height: 1.48;
     }
 
     /* 5. 各地停留時間比較（月數） */
@@ -596,14 +587,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: var(--fs-h3);
+      font-size: 16px;
       font-weight: 700;
       color: var(--text-primary);
       margin-bottom: 4px;
     }
 
     .duration-val {
-      font-size: var(--fs-body);
+      font-size: 15px;
       color: var(--accent-gold);
       white-space: nowrap;
     }
@@ -626,7 +617,7 @@
 
     .bar-caption {
       margin-top: 3px;
-      font-size: var(--fs-caption);
+      font-size: 13px;
       color: var(--text-muted);
       display: flex;
       justify-content: space-between;
@@ -678,59 +669,6 @@
       user-select: none;
     }
 
-
-    /* 6. 網頁最下方考據與資料來源輔助說明 */
-    .reference-footer {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 12px 16px;
-      font-size: var(--fs-sub);
-      line-height: 1.6;
-      color: var(--text-secondary);
-    }
-
-    .reference-footer-title {
-      font-size: var(--fs-h2);
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .reference-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-
-    .reference-card {
-      background: rgba(15, 23, 42, 0.55);
-      border: 1px solid var(--border-subtle);
-      border-radius: 9px;
-      padding: 9px 12px;
-    }
-
-    .reference-card h4 {
-      font-size: var(--fs-h3);
-      font-weight: 700;
-      color: var(--accent-cyan);
-      margin-bottom: 4px;
-    }
-
-    .reference-card p {
-      font-size: var(--fs-sub);
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    @media (max-width: 860px) {
-      .reference-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
     /* 手機版調整（<= 860px）：來源篩選與縮放放在同一行，移除地圖圖例 */
     @media (max-width: 860px) {
       .app-shell {
@@ -765,9 +703,9 @@
       }
 
       .source-btn {
-        padding: 3px 7px;
-        font-size: 12.5px;
-        min-height: 28px;
+        padding: 3px 5px;
+        font-size: 11px;
+        min-height: 26px;
       }
 
       .map-controls-inline {
@@ -915,24 +853,6 @@
       </div>
       <div class="duration-list" id="duration-list"></div>
     </aside>
-    <!-- 6. 網頁最下方資料來源與考據輔助說明 -->
-    <footer class="reference-footer" aria-label="資料來源與考據輔助說明">
-      <div class="reference-footer-title">資料來源與考據輔助說明</div>
-      <div class="reference-grid">
-        <div class="reference-card">
-          <h4>1. 新約聖經正典依據（實線）</h4>
-          <p><strong>《使徒行傳》：</strong>保羅歸信與三次宣教、羅馬軟禁；彼得與約翰在耶路撒冷及撒馬利亞見證；腓力在撒馬利亞、往迦薩路上與該撒利亞事工；雅各在耶路撒冷會議角色。<br><strong>書信與啟示錄：</strong>《加拉太書》《羅馬書》《哥林多前書》《歌羅西書》《腓利門書》《提摩太後書》《彼得前書》及《啟示錄》拔摩海島記載。</p>
-        </div>
-        <div class="reference-card">
-          <h4>2. 早期教會史與傳統推估（虛線）</h4>
-          <p>參考<strong>《羅馬革利免一書》、愛任紐《反異端》、優西比烏《教會史》</strong>等早期教會文獻作為參照，呈現保羅西行西班牙、彼得晚年羅馬、約翰晚年以弗所、馬可建立亞歷山卓教會，以及安得烈與多馬向北方／東方傳道之傳統脈絡。</p>
-        </div>
-        <div class="reference-card">
-          <h4>3. 年代區間、停留月數與座標性質</h4>
-          <p><strong>年代與月數：</strong>公元起訖年份（30–100 AD）屬學界主流推估區間；除哥林多「一年零六個月」、羅馬「足足兩年」等經文線索外，其餘月數為便於比較之估算示意。<br><strong>地圖節點：</strong>部分跨區路線借用區域代表座標呈現，詳見各站點「考據與年代說明」。</p>
-        </div>
-      </div>
-    </footer>
   </div>
 
   <script>
@@ -1673,7 +1593,7 @@
               </div>
               <div class="concurrent-sub">${oCity ? oCity.name : ""}（${oStop.start}–${oStop.end} AD｜估算約 ${oStop.months} 個月）</div>
               <div class="concurrent-desc"><strong>${oStop.title}：</strong>${oStop.desc}</div>
-              <div class="concurrent-desc" style="margin-top:4px; font-size:var(--fs-caption); color:var(--text-muted);">經文／文獻：${oStop.ref}</div>
+              <div class="concurrent-desc" style="margin-top:4px; font-size:12.5px; color:var(--text-muted);">經文／文獻：${oStop.ref}</div>
             </div>
           `;
         }).join("");
@@ -1700,10 +1620,8 @@
         </div>
         <div class="narrative-heading">${stop.title}</div>
         <p>${stop.desc}</p>
-        <div style="margin-top:10px; padding:10px 12px; border-radius:8px; background:rgba(15,23,42,0.55); border:1px solid var(--border-subtle); font-size:var(--fs-sub); color:var(--text-secondary);">
-          <div style="margin-bottom:4px;"><strong style="color:#f8fafc;">經文／文獻出處：</strong>${stop.ref}</div>
-          <div style="margin-bottom:4px;"><strong style="color:#f8fafc;">考據與年代說明：</strong>${stop.basisNote || ""}</div>
-          <div><strong style="color:#f8fafc;">停留月數說明：</strong>${stop.durationBasis || ""}</div>
+        <div style="margin-top:10px; padding:10px 12px; border-radius:8px; background:rgba(15,23,42,0.55); border:1px solid var(--border-subtle); font-size:14.5px; color:var(--text-secondary);">
+          <div><strong style="color:#f8fafc;">資料來源與考據說明：</strong>本互動地圖依據新約正典（《使徒行傳》、書信與《啟示錄》）及羅馬革利免一書、愛任紐、優西比烏等早期教會傳統整理，並結合主流年代推估與視覺化估算設定。本站點依據／出處：${stop.ref}；${stop.basisNote || ""} ${stop.durationBasis || ""}</div>
         </div>
         ${concurrentHtml}
       `;
