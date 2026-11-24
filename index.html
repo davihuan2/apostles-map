@@ -40,9 +40,10 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* 桌機版：單頁完整呈現「播放欄 + 門徒列 +（地圖與敘事左右並排）」＋下方「各地停留時間比較（月數）」 */
     .app-shell {
       display: grid;
-      grid-template-rows: auto auto minmax(0, 46fr) minmax(0, 42fr);
+      grid-template-rows: auto auto minmax(0, 1.35fr) minmax(0, 0.85fr);
       gap: 8px;
       width: 100%;
       height: 100dvh;
@@ -143,11 +144,11 @@
       background: rgba(234, 179, 8, 0.14);
     }
 
-    /* 2. 精簡單行門徒複選列 + 文獻來源篩選（不自動換行撐高） */
+    /* 2. 門徒多選列 */
     .top-bar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 8px;
       background: var(--bg-panel);
       border: 1px solid var(--border-subtle);
@@ -203,19 +204,52 @@
       flex-shrink: 0;
     }
 
+    /* 3. 桌機主區：左地圖 + 右敘事同框一頁呈現 */
+    .main-stage {
+      display: grid;
+      grid-template-columns: 1.35fr 0.85fr;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    .map-section {
+      position: relative;
+      background: #0c1726;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .map-toolbar-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 10px;
+      background: rgba(13, 19, 29, 0.92);
+      border-bottom: 1px solid var(--border-subtle);
+      z-index: 6;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
     .source-toggle-group {
       display: inline-flex;
       align-items: center;
-      background: #0e1622;
-      border: 1px solid var(--border-subtle);
+      background: #0b121c;
+      border: 1px solid var(--border-strong);
       border-radius: 8px;
       padding: 2px;
-      gap: 2px;
+      gap: 3px;
       flex-shrink: 0;
     }
 
     .source-btn {
-      padding: 3px 8px;
+      padding: 3px 9px;
       border-radius: 6px;
       border: none;
       background: transparent;
@@ -228,18 +262,47 @@
     }
 
     .source-btn.active {
-      background: #243652;
+      background: #253856;
       color: #f8fafc;
-      box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.35);
+      box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.4);
     }
 
-    /* 3. 上方全幅互動地圖 */
-    .map-section {
+    .map-controls-inline {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .map-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .map-btn:hover {
+      background: #273954;
+      border-color: var(--accent-cyan);
+    }
+
+    .map-btn.wide {
+      width: auto;
+      padding: 0 9px;
+      font-size: 13px;
+    }
+
+    .map-canvas-wrap {
       position: relative;
-      background: #0c1726;
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
+      flex: 1;
       min-height: 0;
     }
 
@@ -255,74 +318,23 @@
       cursor: grabbing;
     }
 
-    .map-overlay-tl {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      pointer-events: none;
-      z-index: 4;
-      max-width: calc(100% - 140px);
-    }
-
     .legend-hud {
-      background: rgba(13, 19, 29, 0.85);
+      position: absolute;
+      bottom: 8px;
+      left: 10px;
+      background: rgba(13, 19, 29, 0.88);
       backdrop-filter: blur(8px);
       border: 1px solid var(--border-subtle);
-      border-radius: 10px;
+      border-radius: 9px;
       padding: 4px 10px;
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--text-secondary);
       display: flex;
       align-items: center;
       gap: 10px;
+      pointer-events: none;
+      z-index: 4;
       white-space: nowrap;
-    }
-
-    .map-controls-tr {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      z-index: 5;
-    }
-
-    .map-btn {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      border: 1px solid var(--border-strong);
-      background: rgba(20, 29, 43, 0.92);
-      color: var(--text-primary);
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .map-btn:hover {
-      background: #273954;
-      border-color: var(--accent-cyan);
-    }
-
-    .map-btn.wide {
-      width: auto;
-      padding: 0 10px;
-      font-size: 13px;
-    }
-
-    /* 4. 下半部：放大字體雙欄資訊區 */
-    .bottom-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 10px;
-      min-height: 0;
     }
 
     .info-panel {
@@ -429,11 +441,22 @@
       margin-bottom: 4px;
     }
 
+    /* 4. 視窗最下方：各地停留時間比較（月數） */
+    .bottom-duration-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 9px 14px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
     .duration-list {
       overflow-y: auto;
       padding-right: 4px;
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
       scrollbar-width: thin;
     }
@@ -442,7 +465,7 @@
       background: var(--bg-card);
       border: 1px solid transparent;
       border-radius: 9px;
-      padding: 7px 10px;
+      padding: 6px 10px;
       cursor: pointer;
       transition: all 0.14s ease;
     }
@@ -461,21 +484,21 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 700;
       color: var(--text-primary);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .duration-val {
-      font-size: 15px;
+      font-size: 14.5px;
       color: var(--accent-gold);
       white-space: nowrap;
     }
 
     .bar-track {
       width: 100%;
-      height: 11px;
+      height: 10px;
       background: rgba(15, 23, 42, 0.85);
       border-radius: 999px;
       overflow: hidden;
@@ -490,8 +513,8 @@
     }
 
     .bar-caption {
-      margin-top: 3px;
-      font-size: 13px;
+      margin-top: 2px;
+      font-size: 12.5px;
       color: var(--text-muted);
       display: flex;
       justify-content: space-between;
@@ -543,7 +566,7 @@
       user-select: none;
     }
 
-    /* 手機版緊湊排佈：保持單行橫向滑動，不撐高頁面 */
+    /* 手機版友善排佈（<= 860px） */
     @media (max-width: 860px) {
       html, body {
         overflow-x: hidden;
@@ -555,9 +578,9 @@
         height: auto;
         min-height: 100dvh;
         overflow: visible;
-        grid-template-rows: auto auto 270px auto;
+        grid-template-rows: auto auto auto auto;
         gap: 6px;
-        padding: 6px 8px 16px;
+        padding: 6px 8px 18px;
       }
 
       .timeline-bar {
@@ -575,26 +598,50 @@
 
       .top-bar {
         padding: 5px 8px;
-        gap: 6px;
       }
 
-      .legend-hud {
-        font-size: 12px;
-        padding: 3px 8px;
-        gap: 6px;
-      }
-
-      .bottom-grid {
+      .main-stage {
         grid-template-columns: 1fr;
         gap: 8px;
       }
 
-      .info-panel {
-        padding: 10px 12px;
+      .map-toolbar-top {
+        flex-wrap: wrap;
+        gap: 6px;
       }
 
-      .narrative-scroll, .duration-list {
-        max-height: 290px;
+      .source-toggle-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .source-btn {
+        flex: 1;
+        text-align: center;
+        padding: 4px 6px;
+        font-size: 12.5px;
+      }
+
+      .map-controls-inline {
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      .map-canvas-wrap {
+        height: 245px;
+      }
+
+      .legend-hud {
+        font-size: 11.5px;
+        padding: 3px 8px;
+        gap: 6px;
+        max-width: calc(100% - 20px);
+        white-space: normal;
+      }
+
+      .duration-list {
+        grid-template-columns: 1fr;
+        max-height: 300px;
       }
     }
   </style>
@@ -624,68 +671,69 @@
       </div>
     </header>
 
-    <!-- 2. 門徒多選 + 正典/傳統單獨篩選列（單行不換行） -->
-    <section class="top-bar" aria-label="門徒與文獻來源篩選">
+    <!-- 2. 門徒多選列（單行不換行） -->
+    <section class="top-bar" aria-label="門徒多選篩選">
       <div class="apostle-pills" id="apostle-pills" role="group" aria-label="門徒多選篩選"></div>
-
-      <div class="source-toggle-group" role="group" aria-label="文獻來源篩選">
-        <button class="source-btn active" data-source="all">全部來源</button>
-        <button class="source-btn" data-source="canon">僅正典／早期文獻</button>
-        <button class="source-btn" data-source="trad">僅虛線教會傳統</button>
-      </div>
     </section>
 
-    <!-- 3. 上方全幅互動地圖 -->
-    <section class="map-section" aria-label="地中海宣教互動地圖">
-      <div class="map-overlay-tl">
-        <div class="legend-hud">
-          <span>實線＝正典／早期文獻</span>
-          <span>虛線＝教會傳統推估</span>
-          <span>圓圈數字＝行程順序（1, 2, 3...）</span>
+    <!-- 3. 桌機單頁左右並排：地圖（含來源篩選與縮放重設）＋ 宣教站點與歷史敘事 -->
+    <section class="main-stage">
+      <div class="map-section" aria-label="地中海宣教互動地圖">
+        <div class="map-toolbar-top">
+          <div class="source-toggle-group" role="group" aria-label="文獻來源篩選">
+            <button class="source-btn active" data-source="all">全部來源</button>
+            <button class="source-btn" data-source="canon">正典／早期文獻</button>
+            <button class="source-btn" data-source="trad">虛線教會傳統</button>
+          </div>
+
+          <div class="map-controls-inline">
+            <button class="map-btn" id="zoom-in" title="放大地圖">＋</button>
+            <button class="map-btn" id="zoom-out" title="縮小地圖">－</button>
+            <button class="map-btn wide" id="zoom-reset" title="重設視角">重設視角</button>
+          </div>
+        </div>
+
+        <div class="map-canvas-wrap">
+          <div class="legend-hud">
+            <span>實線＝正典／早期文獻</span>
+            <span>虛線＝教會傳統推估</span>
+            <span>圓圈數字＝行程順序（1, 2, 3...）</span>
+          </div>
+
+          <svg id="med-map" viewBox="0 0 1000 460" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <pattern id="sea-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(56, 189, 248, 0.05)" stroke-width="1"/>
+              </pattern>
+            </defs>
+
+            <g id="viewport-group">
+              <rect x="-400" y="-300" width="1800" height="1100" fill="#0d1b2d" />
+              <rect x="-400" y="-300" width="1800" height="1100" fill="url(#sea-grid)" />
+
+              <path class="land-mass" d="M 345,45 L 435,45 L 455,95 L 485,155 L 520,185 L 505,198 L 475,172 L 458,205 L 438,195 L 448,150 L 415,115 L 365,110 L 345,85 Z" />
+              <polygon class="land-mass" points="435,212 478,210 465,232 432,225" />
+              <path class="land-mass" d="M 525,45 L 635,45 L 630,135 L 595,165 L 580,205 L 555,198 L 545,165 L 515,150 L 525,115 Z" />
+              <polygon class="land-mass" points="555,235 628,238 625,248 553,245" />
+              <path class="land-mass" d="M 635,115 L 725,105 L 835,105 L 875,145 L 865,205 L 775,215 L 690,210 L 642,175 Z" />
+              <polygon class="land-mass" points="755,242 802,235 805,246 758,252" />
+              <path class="land-mass" d="M 865,145 L 945,145 L 945,355 L 835,355 L 838,315 L 865,285 L 862,215 Z" />
+              <path class="land-mass" d="M 240,265 L 365,272 L 495,295 L 645,325 L 765,332 L 838,332 L 838,440 L 240,440 Z" />
+              <path class="land-mass" d="M 240,45 L 345,45 L 345,135 L 285,175 L 240,170 Z" />
+
+              <text x="455" y="275" class="region-label">地中海 MEDITERRANEAN SEA</text>
+              <text x="720" y="165" class="region-label">小亞細亞</text>
+              <text x="555" y="120" class="region-label">希臘</text>
+              <text x="735" y="385" class="region-label">埃及</text>
+
+              <g id="routes-layer"></g>
+              <g id="nodes-layer"></g>
+              <g id="labels-layer"></g>
+            </g>
+          </svg>
         </div>
       </div>
 
-      <div class="map-controls-tr">
-        <button class="map-btn" id="zoom-in" title="放大地圖">＋</button>
-        <button class="map-btn" id="zoom-out" title="縮小地圖">－</button>
-        <button class="map-btn wide" id="zoom-reset" title="重設視角">重設視角</button>
-      </div>
-
-      <svg id="med-map" viewBox="0 0 1000 460" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <pattern id="sea-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(56, 189, 248, 0.05)" stroke-width="1"/>
-          </pattern>
-        </defs>
-
-        <g id="viewport-group">
-          <rect x="-400" y="-300" width="1800" height="1100" fill="#0d1b2d" />
-          <rect x="-400" y="-300" width="1800" height="1100" fill="url(#sea-grid)" />
-
-          <path class="land-mass" d="M 345,45 L 435,45 L 455,95 L 485,155 L 520,185 L 505,198 L 475,172 L 458,205 L 438,195 L 448,150 L 415,115 L 365,110 L 345,85 Z" />
-          <polygon class="land-mass" points="435,212 478,210 465,232 432,225" />
-          <path class="land-mass" d="M 525,45 L 635,45 L 630,135 L 595,165 L 580,205 L 555,198 L 545,165 L 515,150 L 525,115 Z" />
-          <polygon class="land-mass" points="555,235 628,238 625,248 553,245" />
-          <path class="land-mass" d="M 635,115 L 725,105 L 835,105 L 875,145 L 865,205 L 775,215 L 690,210 L 642,175 Z" />
-          <polygon class="land-mass" points="755,242 802,235 805,246 758,252" />
-          <path class="land-mass" d="M 865,145 L 945,145 L 945,355 L 835,355 L 838,315 L 865,285 L 862,215 Z" />
-          <path class="land-mass" d="M 240,265 L 365,272 L 495,295 L 645,325 L 765,332 L 838,332 L 838,440 L 240,440 Z" />
-          <path class="land-mass" d="M 240,45 L 345,45 L 345,135 L 285,175 L 240,170 Z" />
-
-          <text x="455" y="275" class="region-label">地中海 MEDITERRANEAN SEA</text>
-          <text x="720" y="165" class="region-label">小亞細亞</text>
-          <text x="555" y="120" class="region-label">希臘</text>
-          <text x="735" y="385" class="region-label">埃及</text>
-
-          <g id="routes-layer"></g>
-          <g id="nodes-layer"></g>
-          <g id="labels-layer"></g>
-        </g>
-      </svg>
-    </section>
-
-    <!-- 4. 下半部：放大字體雙欄資訊區 -->
-    <section class="bottom-grid">
       <article class="info-panel">
         <div class="panel-header">
           <div class="panel-title">宣教站點與歷史敘事</div>
@@ -697,15 +745,16 @@
         </div>
         <div class="narrative-scroll" id="narrative-content"></div>
       </article>
-
-      <aside class="info-panel">
-        <div class="panel-header">
-          <div class="panel-title">各地停留時間比較（月數）</div>
-          <span id="total-months-badge" style="font-size:13px; color:var(--accent-gold); font-weight:700;"></span>
-        </div>
-        <div class="duration-list" id="duration-list"></div>
-      </aside>
     </section>
+
+    <!-- 4. 視窗最下方：各地停留時間比較（月數） -->
+    <aside class="bottom-duration-panel">
+      <div class="panel-header">
+        <div class="panel-title">各地停留時間比較（月數）</div>
+        <span id="total-months-badge" style="font-size:13px; color:var(--accent-gold); font-weight:700;"></span>
+      </div>
+      <div class="duration-list" id="duration-list"></div>
+    </aside>
   </div>
 
   <script>
@@ -1210,18 +1259,24 @@
       }
     }
 
+    // 單次播放（播到 100 AD 自動停止，不循環）
     function startPlayback() {
       stopPlayback();
+      if (state.year >= 100) {
+        state.year = 30;
+        yearSlider.value = 30;
+        renderAll();
+      }
       state.playing = true;
       playBtn.textContent = "❚❚ 暫停";
       playBtn.classList.add("active-play");
       const intervalMs = state.playSpeed === 1 ? 450 : 220;
       playTimer = setInterval(() => {
         if (state.year >= 100) {
-          state.year = 30;
-        } else {
-          state.year += 1;
+          stopPlayback();
+          return;
         }
+        state.year += 1;
         yearSlider.value = state.year;
         renderAll();
       }, intervalMs);
