@@ -11,8 +11,8 @@
       --bg-panel: #141d2b;
       --bg-card: #1a2638;
       --bg-card-hover: #213148;
-      --border-subtle: rgba(148, 163, 184, 0.2);
-      --border-strong: rgba(148, 163, 184, 0.36);
+      --border-subtle: rgba(148, 163, 184, 0.22);
+      --border-strong: rgba(148, 163, 184, 0.4);
       --text-primary: #f1f5f9;
       --text-secondary: #cbd5e1;
       --text-muted: #94a3b8;
@@ -32,8 +32,7 @@
 
     html, body {
       width: 100%;
-      height: 100dvh;
-      overflow: hidden;
+      min-height: 100dvh;
       background: var(--bg-app);
       color: var(--text-primary);
       font-family: var(--font-sans);
@@ -42,52 +41,123 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 單屏全覽主容器（100dvh 零捲動） */
+    /* 桌機預設單屏（100dvh），手機自動改為流暢垂直捲動且播放欄置頂 */
     .app-shell {
       display: grid;
-      grid-template-rows: auto minmax(0, 48fr) minmax(0, 42fr) auto;
+      grid-template-rows: auto auto minmax(0, 46fr) minmax(0, 42fr);
       gap: 8px;
       width: 100%;
       height: 100dvh;
+      overflow: hidden;
       padding: 8px 12px;
       background: radial-gradient(circle at 20% 10%, #172336 0%, var(--bg-app) 65%);
     }
 
-    /* 頂部控制與多人複選列 */
+    /* 1. 置頂年代播放與里程碑列 */
+    .timeline-bar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 6px 12px;
+      min-height: 46px;
+      z-index: 20;
+    }
+
+    .play-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .year-chip-inline {
+      background: rgba(234, 179, 8, 0.18);
+      border: 1px solid rgba(234, 179, 8, 0.5);
+      color: #fde047;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 3px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    .tl-btn {
+      padding: 5px 11px;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      min-height: 34px;
+    }
+
+    .tl-btn.active-play {
+      background: var(--accent-gold);
+      color: #0b111a;
+      border-color: var(--accent-gold);
+    }
+
+    .slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      accent-color: var(--accent-gold);
+      cursor: pointer;
+      height: 8px;
+      min-width: 110px;
+    }
+
+    .milestone-btns {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      padding-bottom: 2px;
+    }
+
+    .ms-btn {
+      padding: 4px 9px;
+      border-radius: 7px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(30, 41, 59, 0.85);
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+      min-height: 32px;
+    }
+
+    .ms-btn:hover, .ms-btn.active-ms {
+      border-color: var(--accent-gold);
+      color: #fde047;
+      background: rgba(234, 179, 8, 0.14);
+    }
+
+    /* 2. 多人複選 + 文獻來源篩選列 */
     .top-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
       background: var(--bg-panel);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 6px 12px;
+      padding: 6px 10px;
       min-height: 44px;
-      flex-wrap: nowrap;
       overflow-x: auto;
       scrollbar-width: thin;
-    }
-
-    .brand-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--text-primary);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .brand-badge {
-      font-size: 12px;
-      font-weight: 600;
-      color: #fef08a;
-      background: rgba(234, 179, 8, 0.18);
-      border: 1px solid rgba(234, 179, 8, 0.45);
-      border-radius: 999px;
-      padding: 1px 8px;
     }
 
     .apostle-pills {
@@ -101,7 +171,7 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 3px 9px;
+      padding: 4px 10px;
       border-radius: 999px;
       border: 1px solid var(--border-subtle);
       background: var(--bg-card);
@@ -109,9 +179,10 @@
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.14s ease;
       white-space: nowrap;
       user-select: none;
+      min-height: 32px;
     }
 
     .apostle-chip:hover {
@@ -132,16 +203,52 @@
       flex-shrink: 0;
     }
 
+    .filter-right-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .source-toggle-group {
+      display: inline-flex;
+      align-items: center;
+      background: #0e1622;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .source-btn {
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      min-height: 28px;
+    }
+
+    .source-btn.active {
+      background: #243652;
+      color: #f8fafc;
+      box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.35);
+    }
+
     .preset-actions {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       flex-shrink: 0;
     }
 
     .preset-btn {
-      padding: 4px 9px;
-      border-radius: 8px;
+      padding: 4px 8px;
+      border-radius: 7px;
       border: 1px solid var(--border-subtle);
       background: rgba(30, 41, 59, 0.85);
       color: var(--text-secondary);
@@ -149,7 +256,7 @@
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.15s ease;
+      min-height: 30px;
     }
 
     .preset-btn:hover {
@@ -158,7 +265,7 @@
       border-color: var(--accent-cyan);
     }
 
-    /* 上半部：全幅互動地圖 */
+    /* 3. 上半部：全幅互動地圖 */
     .map-section {
       position: relative;
       background: #0c1726;
@@ -183,28 +290,18 @@
     .map-overlay-tl {
       position: absolute;
       top: 10px;
-      left: 12px;
+      left: 10px;
       display: flex;
       align-items: center;
       gap: 8px;
       pointer-events: none;
       z-index: 4;
-    }
-
-    .year-hud {
-      background: rgba(13, 19, 29, 0.86);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border-strong);
-      border-radius: 10px;
-      padding: 5px 12px;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--accent-gold);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+      flex-wrap: wrap;
+      max-width: calc(100% - 140px);
     }
 
     .legend-hud {
-      background: rgba(13, 19, 29, 0.82);
+      background: rgba(13, 19, 29, 0.85);
       backdrop-filter: blur(8px);
       border: 1px solid var(--border-subtle);
       border-radius: 10px;
@@ -214,12 +311,13 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
     .map-controls-tr {
       position: absolute;
       top: 10px;
-      right: 12px;
+      right: 10px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -231,7 +329,7 @@
       height: 34px;
       border-radius: 8px;
       border: 1px solid var(--border-strong);
-      background: rgba(20, 29, 43, 0.9);
+      background: rgba(20, 29, 43, 0.92);
       color: var(--text-primary);
       font-size: 16px;
       font-weight: 700;
@@ -239,7 +337,6 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.14s ease;
     }
 
     .map-btn:hover {
@@ -253,7 +350,7 @@
       font-size: 13px;
     }
 
-    /* 下半部：放大字體雙欄資訊區（敘事 + 停留月數比較） */
+    /* 4. 下半部：放大字體雙欄資訊區 */
     .bottom-grid {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
@@ -286,9 +383,6 @@
       font-size: 16px;
       font-weight: 700;
       color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .step-nav {
@@ -298,14 +392,15 @@
     }
 
     .step-btn {
-      padding: 3px 10px;
-      border-radius: 7px;
+      padding: 4px 11px;
+      border-radius: 8px;
       border: 1px solid var(--border-strong);
       background: var(--bg-card);
       color: var(--text-primary);
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
+      min-height: 32px;
     }
 
     .step-btn:hover:not(:disabled) {
@@ -321,8 +416,8 @@
     .narrative-scroll {
       overflow-y: auto;
       padding-right: 4px;
-      font-size: 16px;
-      line-height: 1.62;
+      font-size: 16.5px;
+      line-height: 1.65;
       color: var(--text-secondary);
       scrollbar-width: thin;
     }
@@ -331,7 +426,7 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       margin-bottom: 6px;
     }
 
@@ -367,7 +462,6 @@
       margin-bottom: 4px;
     }
 
-    /* 停留時間長條圖區 */
     .duration-list {
       overflow-y: auto;
       padding-right: 4px;
@@ -381,7 +475,7 @@
       background: var(--bg-card);
       border: 1px solid transparent;
       border-radius: 9px;
-      padding: 6px 10px;
+      padding: 7px 10px;
       cursor: pointer;
       transition: all 0.14s ease;
     }
@@ -437,80 +531,6 @@
       gap: 6px;
     }
 
-    /* 底部 30–100 AD 年代時間軸 */
-    .timeline-bar {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 10px;
-      background: var(--bg-panel);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 6px 12px;
-      min-height: 44px;
-    }
-
-    .play-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .tl-btn {
-      padding: 4px 10px;
-      border-radius: 7px;
-      border: 1px solid var(--border-strong);
-      background: var(--bg-card);
-      color: var(--text-primary);
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .tl-btn.active-play {
-      background: var(--accent-gold);
-      color: #0b111a;
-      border-color: var(--accent-gold);
-    }
-
-    .slider-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    input[type="range"] {
-      flex: 1;
-      accent-color: var(--accent-gold);
-      cursor: pointer;
-      height: 6px;
-    }
-
-    .milestone-btns {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-    }
-
-    .ms-btn {
-      padding: 3px 8px;
-      border-radius: 6px;
-      border: 1px solid var(--border-subtle);
-      background: rgba(30, 41, 59, 0.75);
-      color: var(--text-secondary);
-      font-size: 13px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .ms-btn:hover {
-      border-color: var(--accent-gold);
-      color: #ffffff;
-    }
-
     /* SVG 樣式 */
     .land-mass {
       fill: #243347;
@@ -556,47 +576,163 @@
       user-select: none;
     }
 
-    @media (max-width: 900px) {
+    /* 手機版友善優化（<= 860px）：播放欄置頂吸頂、地圖高度適中、面板自然展開好滑 */
+    @media (max-width: 860px) {
       html, body {
-        overflow: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
         height: auto;
+        font-size: 16px;
       }
+
       .app-shell {
         height: auto;
         min-height: 100dvh;
-        grid-template-rows: auto 360px auto auto;
+        overflow: visible;
+        grid-template-rows: auto auto 290px auto;
+        gap: 8px;
+        padding: 6px 8px 18px;
       }
+
+      .timeline-bar {
+        position: sticky;
+        top: 0;
+        grid-template-columns: 1fr;
+        gap: 6px;
+        padding: 8px 10px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+      }
+
+      .play-controls {
+        justify-content: space-between;
+      }
+
+      .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        padding: 8px;
+        overflow-x: visible;
+      }
+
+      .apostle-pills {
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .apostle-chip {
+        padding: 5px 10px;
+        font-size: 14px;
+        min-height: 36px;
+      }
+
+      .filter-right-group {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 6px;
+      }
+
+      .source-toggle-group {
+        flex: 1;
+        justify-content: space-between;
+      }
+
+      .source-btn {
+        flex: 1;
+        text-align: center;
+        padding: 5px 6px;
+        font-size: 13px;
+        min-height: 34px;
+      }
+
+      .preset-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .preset-btn {
+        flex: 1;
+        text-align: center;
+        padding: 5px 6px;
+        min-height: 34px;
+      }
+
+      .map-overlay-tl {
+        top: 8px;
+        left: 8px;
+        max-width: calc(100% - 116px);
+      }
+
+      .legend-hud {
+        font-size: 12px;
+        padding: 4px 8px;
+        gap: 6px;
+      }
+
       .bottom-grid {
         grid-template-columns: 1fr;
+        gap: 10px;
       }
-      .timeline-bar {
-        grid-template-columns: 1fr;
+
+      .info-panel {
+        padding: 12px;
+        max-height: none;
+      }
+
+      .narrative-scroll, .duration-list {
+        max-height: 320px;
+        font-size: 17px;
       }
     }
   </style>
 </head>
 <body>
   <div class="app-shell">
-    <!-- 1. 頂部多人複選工具列 -->
-    <header class="top-bar">
-      <div class="brand-title">
-        <span>地中海門徒宣教路徑</span>
-        <span class="brand-badge">30–100 AD</span>
+    <!-- 1. 置頂播放欄（桌機頂部、手機吸頂最上方） -->
+    <header class="timeline-bar" aria-label="年代播放控制列">
+      <div class="play-controls">
+        <span class="year-chip-inline" id="year-hud">30 AD</span>
+        <button class="tl-btn" id="play-btn">▶ 播放</button>
+        <button class="tl-btn" id="speed-btn">1x</button>
       </div>
 
-      <div class="apostle-pills" id="apostle-pills" role="group" aria-label="門徒多選篩選"></div>
+      <div class="slider-wrap">
+        <span style="font-size:13px; color:var(--text-muted);">30</span>
+        <input type="range" id="year-slider" min="30" max="100" value="30" step="1" aria-label="年代滑桿" />
+        <span style="font-size:13px; color:var(--text-muted);">100</span>
+      </div>
 
-      <div class="preset-actions">
-        <button class="preset-btn" data-preset="paul-peter-mark">保羅＋彼得＋馬可</button>
-        <button class="preset-btn" data-preset="jerusalem-core">彼得＋雅各＋約翰</button>
-        <button class="preset-btn" data-preset="all">全選（9位）</button>
+      <div class="milestone-btns">
+        <button class="ms-btn" data-year="30">30 五旬節</button>
+        <button class="ms-btn" data-year="49">49 耶路撒冷會議</button>
+        <button class="ms-btn" data-year="64">64 羅馬大火逼迫</button>
+        <button class="ms-btn" data-year="70">70 聖殿被毀</button>
+        <button class="ms-btn" data-year="95">95 拔摩海島</button>
       </div>
     </header>
 
-    <!-- 2. 上方全幅互動地圖 -->
+    <!-- 2. 門徒多選 + 正典/傳統單獨篩選列 -->
+    <section class="top-bar" aria-label="門徒與文獻來源篩選">
+      <div class="apostle-pills" id="apostle-pills" role="group" aria-label="門徒多選篩選"></div>
+
+      <div class="filter-right-group">
+        <div class="source-toggle-group" role="group" aria-label="文獻來源篩選">
+          <button class="source-btn active" data-source="all">全部來源</button>
+          <button class="source-btn" data-source="canon">僅正典／早期文獻</button>
+          <button class="source-btn" data-source="trad">僅虛線教會傳統</button>
+        </div>
+
+        <div class="preset-actions">
+          <button class="preset-btn" data-preset="paul-peter-mark">保羅＋彼得＋馬可</button>
+          <button class="preset-btn" data-preset="jerusalem-core">彼得＋雅各＋約翰</button>
+          <button class="preset-btn" data-preset="all">全選（9位）</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 上方全幅互動地圖 -->
     <section class="map-section" aria-label="地中海宣教互動地圖">
       <div class="map-overlay-tl">
-        <div class="year-hud" id="year-hud">年代：30 AD</div>
         <div class="legend-hud">
           <span>實線＝正典／早期文獻</span>
           <span>虛線＝教會傳統推估</span>
@@ -618,37 +754,25 @@
         </defs>
 
         <g id="viewport-group">
-          <!-- 海域底色與格線 -->
           <rect x="-400" y="-300" width="1800" height="1100" fill="#0d1b2d" />
           <rect x="-400" y="-300" width="1800" height="1100" fill="url(#sea-grid)" />
 
-          <!-- 簡化地中海與周邊陸塊輪廓（座標對應 1000x460） -->
-          <!-- 義大利半島 -->
+          <!-- 地中海與周邊陸塊輪廓 -->
           <path class="land-mass" d="M 345,45 L 435,45 L 455,95 L 485,155 L 520,185 L 505,198 L 475,172 L 458,205 L 438,195 L 448,150 L 415,115 L 365,110 L 345,85 Z" />
-          <!-- 西西里島 -->
           <polygon class="land-mass" points="435,212 478,210 465,232 432,225" />
-          <!-- 希臘與巴爾幹南部 -->
           <path class="land-mass" d="M 525,45 L 635,45 L 630,135 L 595,165 L 580,205 L 555,198 L 545,165 L 515,150 L 525,115 Z" />
-          <!-- 克里特島 -->
           <polygon class="land-mass" points="555,235 628,238 625,248 553,245" />
-          <!-- 小亞細亞（安那托利亞） -->
           <path class="land-mass" d="M 635,115 L 725,105 L 835,105 L 875,145 L 865,205 L 775,215 L 690,210 L 642,175 Z" />
-          <!-- 塞浦路斯 -->
           <polygon class="land-mass" points="755,242 802,235 805,246 758,252" />
-          <!-- 敘利亞與黎凡特／猶太地 -->
           <path class="land-mass" d="M 865,145 L 945,145 L 945,355 L 835,355 L 838,315 L 865,285 L 862,215 Z" />
-          <!-- 埃及與北非海岸 -->
           <path class="land-mass" d="M 240,265 L 365,272 L 495,295 L 645,325 L 765,332 L 838,332 L 838,440 L 240,440 Z" />
-          <!-- 西班牙東南部邊緣 -->
           <path class="land-mass" d="M 240,45 L 345,45 L 345,135 L 285,175 L 240,170 Z" />
 
-          <!-- 區域水紋字 -->
           <text x="455" y="275" class="region-label">地中海 MEDITERRANEAN SEA</text>
           <text x="720" y="165" class="region-label">小亞細亞</text>
           <text x="555" y="120" class="region-label">希臘</text>
           <text x="735" y="385" class="region-label">埃及</text>
 
-          <!-- 路徑層、節點層、標籤層 -->
           <g id="routes-layer"></g>
           <g id="nodes-layer"></g>
           <g id="labels-layer"></g>
@@ -656,14 +780,11 @@
       </svg>
     </section>
 
-    <!-- 3. 下方放大字體雙欄資訊區 -->
+    <!-- 4. 下半部：放大字體雙欄資訊區 -->
     <section class="bottom-grid">
-      <!-- 左欄：站點與門徒敘事 -->
       <article class="info-panel">
         <div class="panel-header">
-          <div class="panel-title">
-            <span>宣教站點與歷史敘事</span>
-          </div>
+          <div class="panel-title">宣教站點與歷史敘事</div>
           <div class="step-nav">
             <button class="step-btn" id="prev-step">← 上一站</button>
             <span id="step-counter" style="font-size:14px; color:var(--text-muted); min-width:56px; text-align:center;">1 / 1</span>
@@ -673,43 +794,17 @@
         <div class="narrative-scroll" id="narrative-content"></div>
       </article>
 
-      <!-- 右欄：各地停留時間比較 -->
       <aside class="info-panel">
         <div class="panel-header">
-          <div class="panel-title">
-            <span>各地停留時間比較（月數）</span>
-          </div>
+          <div class="panel-title">各地停留時間比較（月數）</div>
           <span id="total-months-badge" style="font-size:13px; color:var(--accent-gold); font-weight:700;"></span>
         </div>
         <div class="duration-list" id="duration-list"></div>
       </aside>
     </section>
-
-    <!-- 4. 底部 30–100 AD 年代時間軸 -->
-    <footer class="timeline-bar">
-      <div class="play-controls">
-        <button class="tl-btn" id="play-btn">▶ 播放</button>
-        <button class="tl-btn" id="speed-btn">1x</button>
-      </div>
-
-      <div class="slider-wrap">
-        <span style="font-size:13px; color:var(--text-muted);">30 AD</span>
-        <input type="range" id="year-slider" min="30" max="100" value="30" step="1" aria-label="年代滑桿" />
-        <span style="font-size:13px; color:var(--text-muted);">100 AD</span>
-      </div>
-
-      <div class="milestone-btns">
-        <button class="ms-btn" data-year="30">30 五旬節</button>
-        <button class="ms-btn" data-year="49">49 耶路撒冷會議</button>
-        <button class="ms-btn" data-year="64">64 羅馬大火逼迫</button>
-        <button class="ms-btn" data-year="70">70 聖殿被毀</button>
-        <button class="ms-btn" data-year="95">95 拔摩海島</button>
-      </div>
-    </footer>
   </div>
 
   <script>
-    // 城市座標（對應 SVG viewBox 0 0 1000 460）
     const CITIES = {
       jerusalem:  { id: "jerusalem",  name: "耶路撒冷",   x: 888, y: 292 },
       damascus:   { id: "damascus",   name: "大馬士革",   x: 912, y: 242 },
@@ -717,16 +812,13 @@
       cyprus:     { id: "cyprus",     name: "塞浦路斯",   x: 780, y: 243 },
       ephesus:    { id: "ephesus",    name: "以弗所",     x: 662, y: 178 },
       patmos:     { id: "patmos",     name: "拔摩海島",   x: 632, y: 196 },
-      philippi:   { id: "philippi",   name: "腓立比",     x: 582, y: 84  },
       corinth:    { id: "corinth",    name: "哥林多",     x: 562, y: 158 },
-      crete:      { id: "crete",      name: "克里特",     x: 590, y: 241 },
       rome:       { id: "rome",       name: "羅馬",       x: 412, y: 108 },
       spain:      { id: "spain",      name: "西班牙海岸", x: 268, y: 145 },
       alexandria: { id: "alexandria", name: "亞歷山卓",   x: 745, y: 334 },
       blacksea:   { id: "blacksea",   name: "黑海／小亞細亞北", x: 755, y: 95 }
     };
 
-    // 門徒與使徒資料（含順序 stops、停留月數 months、年代區間、正典/傳統標記）
     const APOSTLES = [
       {
         id: "paul",
@@ -815,15 +907,15 @@
         name: "多馬",
         color: "#facc15",
         stops: [
-          { city: "jerusalem", start: 30, end: 38, months: 36, source: "canon", ref: "約 20:24–29; 徒 1:13", title: "從懷疑到 confessing「我的主、我的神」", desc: "復活初期親眼見證並宣告信仰，隨後與眾門徒在耶路撒冷一同參與早期教會生活。" },
+          { city: "jerusalem", start: 30, end: 38, months: 36, source: "canon", ref: "約 20:24–29; 徒 1:13", title: "從懷疑到宣告「我的主、我的神」", desc: "復活初期親眼見證並宣告信仰，隨後與眾門徒在耶路撒冷一同參與早期教會生活。" },
           { city: "damascus",  start: 40, end: 52, months: 72, source: "trad",  ref: "敘利亞教會傳統", title: "敘利亞與美索不達米亞東方路線", desc: "東方教會傳統記載多馬往敘利亞、帕提亞等東方地區傳道（之後更向印度延伸），在敘利亞教會擁有極高地位。" }
         ]
       }
     ];
 
-    // 狀態管理
     const state = {
       selectedIds: new Set(["paul", "peter", "mark"]),
+      sourceFilter: "all", // "all" | "canon" | "trad"
       activeApostleId: "paul",
       selectedStopIndex: 0,
       year: 30,
@@ -856,24 +948,29 @@
 
     let playTimer = null;
 
+    function getFilteredStops(apostle) {
+      if (state.sourceFilter === "all") return apostle.stops;
+      return apostle.stops.filter(st => st.source === state.sourceFilter);
+    }
+
     function getSelectedApostles() {
       return APOSTLES.filter(a => state.selectedIds.has(a.id));
     }
 
-    function ensureActiveApostleValid() {
+    function ensureSelectionValid() {
       const selected = getSelectedApostles();
       if (selected.length === 0) {
         state.selectedIds.add("paul");
         state.activeApostleId = "paul";
         state.selectedStopIndex = 0;
-        return;
       }
       if (!state.selectedIds.has(state.activeApostleId)) {
-        state.activeApostleId = selected[0].id;
+        state.activeApostleId = Array.from(state.selectedIds)[0];
         state.selectedStopIndex = 0;
       }
       const active = APOSTLES.find(a => a.id === state.activeApostleId);
-      if (state.selectedStopIndex >= active.stops.length) {
+      const stops = getFilteredStops(active);
+      if (stops.length > 0 && state.selectedStopIndex >= stops.length) {
         state.selectedStopIndex = 0;
       }
     }
@@ -898,7 +995,7 @@
           }
           state.activeApostleId = ap.id;
           state.selectedStopIndex = 0;
-          ensureActiveApostleValid();
+          ensureSelectionValid();
           renderAll();
         });
         pillsContainer.appendChild(btn);
@@ -918,13 +1015,12 @@
       labelsLayer.innerHTML = "";
 
       const selected = getSelectedApostles();
-      const cityGroups = {}; // 同一城市聚集多位門徒／多站點時的錯開索引
+      const cityGroups = {};
 
       selected.forEach(ap => {
         const isFocused = ap.id === state.activeApostleId;
-        const stops = ap.stops;
+        const stops = getFilteredStops(ap);
 
-        // 繪製相鄰站點連線
         for (let i = 0; i < stops.length - 1; i++) {
           const fromCity = CITIES[stops[i].city];
           const toCity = CITIES[stops[i + 1].city];
@@ -950,7 +1046,6 @@
           routesLayer.appendChild(path);
         }
 
-        // 繪製站點編號徽章（1, 2, 3...）
         stops.forEach((st, idx) => {
           const c = CITIES[st.city];
           if (!c) return;
@@ -959,7 +1054,6 @@
           const slotIndex = cityGroups[c.id].length;
           cityGroups[c.id].push({ ap, st, idx });
 
-          // 交會城市自動錯開，避免重疊
           const angle = slotIndex * 1.15;
           const radiusOffset = slotIndex === 0 ? 0 : 14 + Math.floor(slotIndex / 3) * 6;
           const nx = c.x + Math.cos(angle) * radiusOffset;
@@ -1011,7 +1105,6 @@
         });
       });
 
-      // 繪製城市地名標籤
       Object.values(CITIES).forEach(c => {
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
         label.setAttribute("x", c.x);
@@ -1025,20 +1118,34 @@
 
     function renderNarrative() {
       const activeApostle = APOSTLES.find(a => a.id === state.activeApostleId) || APOSTLES[0];
-      const stop = activeApostle.stops[state.selectedStopIndex] || activeApostle.stops[0];
+      const stops = getFilteredStops(activeApostle);
+
+      if (stops.length === 0) {
+        stepCounterEl.textContent = "0 / 0";
+        prevStepBtn.disabled = true;
+        nextStepBtn.disabled = true;
+        narrativeEl.innerHTML = `
+          <div class="narrative-heading">${activeApostle.name}在此來源篩選下無對應站點</div>
+          <p>請切換上方「全部來源」或改選其他門徒查看該類別記載。</p>
+        `;
+        return;
+      }
+
+      const safeIdx = Math.min(state.selectedStopIndex, stops.length - 1);
+      const stop = stops[safeIdx];
       const city = CITIES[stop.city];
 
-      stepCounterEl.textContent = `${state.selectedStopIndex + 1} / ${activeApostle.stops.length}`;
-      prevStepBtn.disabled = state.selectedStopIndex <= 0;
-      nextStepBtn.disabled = state.selectedStopIndex >= activeApostle.stops.length - 1;
+      stepCounterEl.textContent = `${safeIdx + 1} / ${stops.length}`;
+      prevStepBtn.disabled = safeIdx <= 0;
+      nextStepBtn.disabled = safeIdx >= stops.length - 1;
 
       const sourceClass = stop.source === "canon" ? "pill-source-canon" : "pill-source-trad";
-      const sourceLabel = stop.source === "canon" ? "正典／早期文獻記載" : "早期教會傳統推估";
+      const sourceLabel = stop.source === "canon" ? "正典／早期文獻記載" : "教會傳統推估（虛線）";
 
       narrativeEl.innerHTML = `
         <div class="narrative-meta">
           <span class="pill-tag" style="background:${activeApostle.color}26; color:${activeApostle.color}; border-color:${activeApostle.color}88;">
-            ${activeApostle.name}・第 ${state.selectedStopIndex + 1} 站
+            ${activeApostle.name}・第 ${safeIdx + 1} 站
           </span>
           <span class="pill-tag">${city ? city.name : ""}（約 ${stop.start}–${stop.end} AD）</span>
           <span class="pill-tag">停留約 ${stop.months} 個月</span>
@@ -1052,11 +1159,11 @@
 
     function renderDurationChart() {
       const selected = getSelectedApostles();
-      // 彙整各城市在已選門徒中的停留月數明細
       const cityMap = new Map();
 
       selected.forEach(ap => {
-        ap.stops.forEach((st, idx) => {
+        const stops = getFilteredStops(ap);
+        stops.forEach((st, idx) => {
           const c = CITIES[st.city];
           if (!c) return;
           if (!cityMap.has(c.id)) {
@@ -1064,8 +1171,7 @@
               cityId: c.id,
               cityName: c.name,
               totalMonths: 0,
-              segments: [],
-              firstMatch: { apostleId: ap.id, stopIndex: idx, startYear: st.start }
+              segments: []
             });
           }
           const entry = cityMap.get(c.id);
@@ -1087,9 +1193,15 @@
       totalMonthsBadge.textContent = `合計 ${grandTotal} 個月`;
 
       const activeApostle = APOSTLES.find(a => a.id === state.activeApostleId) || APOSTLES[0];
-      const currentStop = activeApostle.stops[state.selectedStopIndex];
+      const activeStops = getFilteredStops(activeApostle);
+      const currentStop = activeStops[state.selectedStopIndex];
 
       durationListEl.innerHTML = "";
+      if (rows.length === 0) {
+        durationListEl.innerHTML = `<p style="color:var(--text-muted); font-size:15px;">目前篩選條件下無停留月數資料。</p>`;
+        return;
+      }
+
       rows.forEach(row => {
         const isSelectedCity = currentStop && currentStop.city === row.cityId;
         const rowEl = document.createElement("div");
@@ -1115,7 +1227,6 @@
         `;
 
         rowEl.addEventListener("click", () => {
-          // 優先跳轉至目前聚焦門徒在該城市的站點，否則跳轉至首位已選門徒
           const preferred = row.segments.find(s => s.apostleId === state.activeApostleId) || row.segments[0];
           if (preferred) {
             state.activeApostleId = preferred.apostleId;
@@ -1131,19 +1242,32 @@
     }
 
     function renderAll() {
-      yearHud.textContent = `年代：${state.year} AD`;
+      ensureSelectionValid();
+      yearHud.textContent = `${state.year} AD`;
       renderPills();
       renderMap();
       renderNarrative();
       renderDurationChart();
     }
 
+    // 文獻來源篩選按鈕（全部 / 僅正典早期文獻 / 僅虛線教會傳統）
+    document.querySelectorAll(".source-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".source-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        state.sourceFilter = btn.dataset.source;
+        state.selectedStopIndex = 0;
+        renderAll();
+      });
+    });
+
     // 步驟切換
     prevStepBtn.addEventListener("click", () => {
       const ap = APOSTLES.find(a => a.id === state.activeApostleId);
-      if (ap && state.selectedStopIndex > 0) {
+      const stops = getFilteredStops(ap);
+      if (stops.length > 0 && state.selectedStopIndex > 0) {
         state.selectedStopIndex -= 1;
-        state.year = ap.stops[state.selectedStopIndex].start;
+        state.year = stops[state.selectedStopIndex].start;
         yearSlider.value = state.year;
         renderAll();
       }
@@ -1151,9 +1275,10 @@
 
     nextStepBtn.addEventListener("click", () => {
       const ap = APOSTLES.find(a => a.id === state.activeApostleId);
-      if (ap && state.selectedStopIndex < ap.stops.length - 1) {
+      const stops = getFilteredStops(ap);
+      if (stops.length > 0 && state.selectedStopIndex < stops.length - 1) {
         state.selectedStopIndex += 1;
-        state.year = ap.stops[state.selectedStopIndex].start;
+        state.year = stops[state.selectedStopIndex].start;
         yearSlider.value = state.year;
         renderAll();
       }
@@ -1277,7 +1402,6 @@
       svgEl.classList.remove("dragging");
     });
 
-    // 初始渲染
     renderAll();
   </script>
 </body>
