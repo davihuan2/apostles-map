@@ -17,7 +17,6 @@
       --text-secondary: #cbd5e1;
       --text-muted: #94a3b8;
       --accent-gold: #eab308;
-      --accent-gold-soft: rgba(234, 179, 8, 0.16);
       --accent-cyan: #38bdf8;
       --radius-md: 10px;
       --radius-lg: 14px;
@@ -41,7 +40,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 桌機預設單屏（100dvh），手機自動改為流暢垂直捲動且播放欄置頂 */
     .app-shell {
       display: grid;
       grid-template-rows: auto auto minmax(0, 46fr) minmax(0, 42fr);
@@ -63,7 +61,7 @@
       border: 1px solid var(--border-strong);
       border-radius: var(--radius-md);
       padding: 6px 12px;
-      min-height: 46px;
+      min-height: 44px;
       z-index: 20;
     }
 
@@ -85,7 +83,7 @@
     }
 
     .tl-btn {
-      padding: 5px 11px;
+      padding: 4px 10px;
       border-radius: 8px;
       border: 1px solid var(--border-strong);
       background: var(--bg-card);
@@ -94,7 +92,7 @@
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
-      min-height: 34px;
+      min-height: 32px;
     }
 
     .tl-btn.active-play {
@@ -136,7 +134,7 @@
       font-size: 13px;
       cursor: pointer;
       white-space: nowrap;
-      min-height: 32px;
+      min-height: 30px;
     }
 
     .ms-btn:hover, .ms-btn.active-ms {
@@ -145,7 +143,7 @@
       background: rgba(234, 179, 8, 0.14);
     }
 
-    /* 2. 多人複選 + 文獻來源篩選列 */
+    /* 2. 精簡單行門徒複選列 + 文獻來源篩選（不自動換行撐高） */
     .top-bar {
       display: flex;
       align-items: center;
@@ -154,8 +152,9 @@
       background: var(--bg-panel);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 6px 10px;
-      min-height: 44px;
+      padding: 5px 10px;
+      min-height: 42px;
+      flex-wrap: nowrap;
       overflow-x: auto;
       scrollbar-width: thin;
     }
@@ -165,13 +164,14 @@
       align-items: center;
       gap: 5px;
       flex-wrap: nowrap;
+      flex-shrink: 0;
     }
 
     .apostle-chip {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 4px 10px;
+      padding: 3px 9px;
       border-radius: 999px;
       border: 1px solid var(--border-subtle);
       background: var(--bg-card);
@@ -182,7 +182,7 @@
       transition: all 0.14s ease;
       white-space: nowrap;
       user-select: none;
-      min-height: 32px;
+      min-height: 30px;
     }
 
     .apostle-chip:hover {
@@ -197,16 +197,9 @@
     }
 
     .chip-dot {
-      width: 9px;
-      height: 9px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .filter-right-group {
-      display: flex;
-      align-items: center;
-      gap: 6px;
       flex-shrink: 0;
     }
 
@@ -218,6 +211,7 @@
       border-radius: 8px;
       padding: 2px;
       gap: 2px;
+      flex-shrink: 0;
     }
 
     .source-btn {
@@ -239,33 +233,7 @@
       box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.35);
     }
 
-    .preset-actions {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-shrink: 0;
-    }
-
-    .preset-btn {
-      padding: 4px 8px;
-      border-radius: 7px;
-      border: 1px solid var(--border-subtle);
-      background: rgba(30, 41, 59, 0.85);
-      color: var(--text-secondary);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-      min-height: 30px;
-    }
-
-    .preset-btn:hover {
-      background: #283852;
-      color: #ffffff;
-      border-color: var(--accent-cyan);
-    }
-
-    /* 3. 上半部：全幅互動地圖 */
+    /* 3. 上方全幅互動地圖 */
     .map-section {
       position: relative;
       background: #0c1726;
@@ -296,7 +264,6 @@
       gap: 8px;
       pointer-events: none;
       z-index: 4;
-      flex-wrap: wrap;
       max-width: calc(100% - 140px);
     }
 
@@ -305,13 +272,13 @@
       backdrop-filter: blur(8px);
       border: 1px solid var(--border-subtle);
       border-radius: 10px;
-      padding: 5px 10px;
+      padding: 4px 10px;
       font-size: 13px;
       color: var(--text-secondary);
       display: flex;
       align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
+      white-space: nowrap;
     }
 
     .map-controls-tr {
@@ -576,31 +543,30 @@
       user-select: none;
     }
 
-    /* 手機版友善優化（<= 860px）：播放欄置頂吸頂、地圖高度適中、面板自然展開好滑 */
+    /* 手機版緊湊排佈：保持單行橫向滑動，不撐高頁面 */
     @media (max-width: 860px) {
       html, body {
         overflow-x: hidden;
         overflow-y: auto;
         height: auto;
-        font-size: 16px;
       }
 
       .app-shell {
         height: auto;
         min-height: 100dvh;
         overflow: visible;
-        grid-template-rows: auto auto 290px auto;
-        gap: 8px;
-        padding: 6px 8px 18px;
+        grid-template-rows: auto auto 270px auto;
+        gap: 6px;
+        padding: 6px 8px 16px;
       }
 
       .timeline-bar {
         position: sticky;
         top: 0;
         grid-template-columns: 1fr;
-        gap: 6px;
-        padding: 8px 10px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+        gap: 5px;
+        padding: 6px 8px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
       }
 
       .play-controls {
@@ -608,87 +574,34 @@
       }
 
       .top-bar {
-        flex-direction: column;
-        align-items: stretch;
+        padding: 5px 8px;
         gap: 6px;
-        padding: 8px;
-        overflow-x: visible;
-      }
-
-      .apostle-pills {
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-
-      .apostle-chip {
-        padding: 5px 10px;
-        font-size: 14px;
-        min-height: 36px;
-      }
-
-      .filter-right-group {
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 6px;
-      }
-
-      .source-toggle-group {
-        flex: 1;
-        justify-content: space-between;
-      }
-
-      .source-btn {
-        flex: 1;
-        text-align: center;
-        padding: 5px 6px;
-        font-size: 13px;
-        min-height: 34px;
-      }
-
-      .preset-actions {
-        width: 100%;
-        justify-content: space-between;
-      }
-
-      .preset-btn {
-        flex: 1;
-        text-align: center;
-        padding: 5px 6px;
-        min-height: 34px;
-      }
-
-      .map-overlay-tl {
-        top: 8px;
-        left: 8px;
-        max-width: calc(100% - 116px);
       }
 
       .legend-hud {
         font-size: 12px;
-        padding: 4px 8px;
+        padding: 3px 8px;
         gap: 6px;
       }
 
       .bottom-grid {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 8px;
       }
 
       .info-panel {
-        padding: 12px;
-        max-height: none;
+        padding: 10px 12px;
       }
 
       .narrative-scroll, .duration-list {
-        max-height: 320px;
-        font-size: 17px;
+        max-height: 290px;
       }
     }
   </style>
 </head>
 <body>
   <div class="app-shell">
-    <!-- 1. 置頂播放欄（桌機頂部、手機吸頂最上方） -->
+    <!-- 1. 置頂播放欄 -->
     <header class="timeline-bar" aria-label="年代播放控制列">
       <div class="play-controls">
         <span class="year-chip-inline" id="year-hud">30 AD</span>
@@ -711,22 +624,14 @@
       </div>
     </header>
 
-    <!-- 2. 門徒多選 + 正典/傳統單獨篩選列 -->
+    <!-- 2. 門徒多選 + 正典/傳統單獨篩選列（單行不換行） -->
     <section class="top-bar" aria-label="門徒與文獻來源篩選">
       <div class="apostle-pills" id="apostle-pills" role="group" aria-label="門徒多選篩選"></div>
 
-      <div class="filter-right-group">
-        <div class="source-toggle-group" role="group" aria-label="文獻來源篩選">
-          <button class="source-btn active" data-source="all">全部來源</button>
-          <button class="source-btn" data-source="canon">僅正典／早期文獻</button>
-          <button class="source-btn" data-source="trad">僅虛線教會傳統</button>
-        </div>
-
-        <div class="preset-actions">
-          <button class="preset-btn" data-preset="paul-peter-mark">保羅＋彼得＋馬可</button>
-          <button class="preset-btn" data-preset="jerusalem-core">彼得＋雅各＋約翰</button>
-          <button class="preset-btn" data-preset="all">全選（9位）</button>
-        </div>
+      <div class="source-toggle-group" role="group" aria-label="文獻來源篩選">
+        <button class="source-btn active" data-source="all">全部來源</button>
+        <button class="source-btn" data-source="canon">僅正典／早期文獻</button>
+        <button class="source-btn" data-source="trad">僅虛線教會傳統</button>
       </div>
     </section>
 
@@ -757,7 +662,6 @@
           <rect x="-400" y="-300" width="1800" height="1100" fill="#0d1b2d" />
           <rect x="-400" y="-300" width="1800" height="1100" fill="url(#sea-grid)" />
 
-          <!-- 地中海與周邊陸塊輪廓 -->
           <path class="land-mass" d="M 345,45 L 435,45 L 455,95 L 485,155 L 520,185 L 505,198 L 475,172 L 458,205 L 438,195 L 448,150 L 415,115 L 365,110 L 345,85 Z" />
           <polygon class="land-mass" points="435,212 478,210 465,232 432,225" />
           <path class="land-mass" d="M 525,45 L 635,45 L 630,135 L 595,165 L 580,205 L 555,198 L 545,165 L 515,150 L 525,115 Z" />
@@ -915,7 +819,7 @@
 
     const state = {
       selectedIds: new Set(["paul", "peter", "mark"]),
-      sourceFilter: "all", // "all" | "canon" | "trad"
+      sourceFilter: "all",
       activeApostleId: "paul",
       selectedStopIndex: 0,
       year: 30,
@@ -1250,7 +1154,6 @@
       renderDurationChart();
     }
 
-    // 文獻來源篩選按鈕（全部 / 僅正典早期文獻 / 僅虛線教會傳統）
     document.querySelectorAll(".source-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".source-btn").forEach(b => b.classList.remove("active"));
@@ -1261,7 +1164,6 @@
       });
     });
 
-    // 步驟切換
     prevStepBtn.addEventListener("click", () => {
       const ap = APOSTLES.find(a => a.id === state.activeApostleId);
       const stops = getFilteredStops(ap);
@@ -1284,27 +1186,6 @@
       }
     });
 
-    // 預設組合按鈕
-    document.querySelectorAll(".preset-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const mode = btn.dataset.preset;
-        state.selectedIds.clear();
-        if (mode === "paul-peter-mark") {
-          ["paul", "peter", "mark"].forEach(id => state.selectedIds.add(id));
-          state.activeApostleId = "paul";
-        } else if (mode === "jerusalem-core") {
-          ["peter", "james_bro", "john"].forEach(id => state.selectedIds.add(id));
-          state.activeApostleId = "peter";
-        } else {
-          APOSTLES.forEach(a => state.selectedIds.add(a.id));
-          state.activeApostleId = "paul";
-        }
-        state.selectedStopIndex = 0;
-        renderAll();
-      });
-    });
-
-    // 時間軸與播放
     yearSlider.addEventListener("input", (e) => {
       state.year = Number(e.target.value);
       renderAll();
@@ -1357,7 +1238,6 @@
       if (state.playing) startPlayback();
     });
 
-    // 地圖縮放與拖曳
     document.getElementById("zoom-in").addEventListener("click", () => {
       state.zoom = Math.min(2.6, +(state.zoom + 0.25).toFixed(2));
       applyTransform();
