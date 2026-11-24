@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>地中海門徒與早期使徒宣教路徑互動地圖（30–100 AD）</title>
+  <meta name="description" content="視覺化呈現耶穌門徒與早期使徒在公元 30–100 年間於地中海區域的宣教路徑、年代演進、多人複選比較與各地停留時間長度。" />
+  <style>
+    :root {
+      --bg-app: #0d131d;
+      --bg-panel: #141d2b;
+      --bg-card: #1a2638;
+      --bg-card-hover: #213148;
+      --border-subtle: rgba(148, 163, 184, 0.2);
+      --border-strong: rgba(148, 163, 184, 0.36);
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --accent-gold: #eab308;
+      --accent-gold-soft: rgba(234, 179, 8, 0.16);
+      --accent-cyan: #38bdf8;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --font-sans: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background: var(--bg-app);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 單屏全覽主容器（100dvh 零捲動） */
+    .app-shell {
+      display: grid;
+      grid-template-rows: auto minmax(0, 48fr) minmax(0, 42fr) auto;
+      gap: 8px;
+      width: 100%;
+      height: 100dvh;
+      padding: 8px 12px;
+      background: radial-gradient(circle at 20% 10%, #172336 0%, var(--bg-app) 65%);
+    }
+
+    /* 頂部控制與多人複選列 */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 6px 12px;
+      min-height: 44px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .brand-badge {
+      font-size: 12px;
+      font-weight: 600;
+      color: #fef08a;
+      background: rgba(234, 179, 8, 0.18);
+      border: 1px solid rgba(234, 179, 8, 0.45);
+      border-radius: 999px;
+      padding: 1px 8px;
+    }
+
+    .apostle-pills {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: nowrap;
+    }
+
+    .apostle-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .apostle-chip:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+    }
+
+    .apostle-chip.active {
+      color: #0b111a;
+      border-color: transparent;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.25);
+    }
+
+    .chip-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .preset-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .preset-btn {
+      padding: 4px 9px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(30, 41, 59, 0.85);
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .preset-btn:hover {
+      background: #283852;
+      color: #ffffff;
+      border-color: var(--accent-cyan);
+    }
+
+    /* 上半部：全幅互動地圖 */
+    .map-section {
+      position: relative;
+      background: #0c1726;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    #med-map {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    #med-map.dragging {
+      cursor: grabbing;
+    }
+
+    .map-overlay-tl {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .year-hud {
+      background: rgba(13, 19, 29, 0.86);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 5px 12px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent-gold);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    }
+
+    .legend-hud {
+      background: rgba(13, 19, 29, 0.82);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .map-controls-tr {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 5;
+    }
+
+    .map-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      background: rgba(20, 29, 43, 0.9);
+      color: var(--text-primary);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.14s ease;
+    }
+
+    .map-btn:hover {
+      background: #273954;
+      border-color: var(--accent-cyan);
+    }
+
+    .map-btn.wide {
+      width: auto;
+      padding: 0 10px;
+      font-size: 13px;
+    }
+
+    /* 下半部：放大字體雙欄資訊區（敘事 + 停留月數比較） */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    .info-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+      flex-shrink: 0;
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-btn {
+      padding: 3px 10px;
+      border-radius: 7px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .step-btn:hover:not(:disabled) {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-gold);
+    }
+
+    .step-btn:disabled {
+      opacity: 0.38;
+      cursor: not-allowed;
+    }
+
+    .narrative-scroll {
+      overflow-y: auto;
+      padding-right: 4px;
+      font-size: 16px;
+      line-height: 1.62;
+      color: var(--text-secondary);
+      scrollbar-width: thin;
+    }
+
+    .narrative-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 9px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      background: rgba(56, 189, 248, 0.14);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+
+    .pill-source-canon {
+      background: rgba(34, 197, 94, 0.15);
+      color: #86efac;
+      border-color: rgba(34, 197, 94, 0.38);
+    }
+
+    .pill-source-trad {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.38);
+    }
+
+    .narrative-heading {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    /* 停留時間長條圖區 */
+    .duration-list {
+      overflow-y: auto;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      scrollbar-width: thin;
+    }
+
+    .duration-row {
+      background: var(--bg-card);
+      border: 1px solid transparent;
+      border-radius: 9px;
+      padding: 6px 10px;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+
+    .duration-row:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-strong);
+    }
+
+    .duration-row.selected {
+      border-color: var(--accent-gold);
+      background: rgba(234, 179, 8, 0.1);
+    }
+
+    .duration-row-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .duration-val {
+      font-size: 15px;
+      color: var(--accent-gold);
+      white-space: nowrap;
+    }
+
+    .bar-track {
+      width: 100%;
+      height: 11px;
+      background: rgba(15, 23, 42, 0.85);
+      border-radius: 999px;
+      overflow: hidden;
+      display: flex;
+      gap: 2px;
+    }
+
+    .bar-seg {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    .bar-caption {
+      margin-top: 3px;
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    /* 底部 30–100 AD 年代時間軸 */
+    .timeline-bar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 6px 12px;
+      min-height: 44px;
+    }
+
+    .play-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tl-btn {
+      padding: 4px 10px;
+      border-radius: 7px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .tl-btn.active-play {
+      background: var(--accent-gold);
+      color: #0b111a;
+      border-color: var(--accent-gold);
+    }
+
+    .slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      accent-color: var(--accent-gold);
+      cursor: pointer;
+      height: 6px;
+    }
+
+    .milestone-btns {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+
+    .ms-btn {
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(30, 41, 59, 0.75);
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .ms-btn:hover {
+      border-color: var(--accent-gold);
+      color: #ffffff;
+    }
+
+    /* SVG 樣式 */
+    .land-mass {
+      fill: #243347;
+      stroke: #3d5473;
+      stroke-width: 1.2;
+    }
+
+    .region-label {
+      fill: rgba(148, 163, 184, 0.42);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .city-label {
+      fill: #e2e8f0;
+      font-size: 12px;
+      font-weight: 700;
+      pointer-events: none;
+      user-select: none;
+      paint-order: stroke;
+      stroke: #0c1726;
+      stroke-width: 3px;
+      stroke-linejoin: round;
+    }
+
+    .route-path {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: opacity 0.2s ease;
+    }
+
+    .node-badge-text {
+      fill: #090e17;
+      font-size: 11px;
+      font-weight: 800;
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    @media (max-width: 900px) {
+      html, body {
+        overflow: auto;
+        height: auto;
+      }
+      .app-shell {
+        height: auto;
+        min-height: 100dvh;
+        grid-template-rows: auto 360px auto auto;
+      }
+      .bottom-grid {
+        grid-template-columns: 1fr;
+      }
+      .timeline-bar {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- 1. 頂部多人複選工具列 -->
+    <header class="top-bar">
+      <div class="brand-title">
+        <span>地中海門徒宣教路徑</span>
+        <span class="brand-badge">30–100 AD</span>
+      </div>
+
+      <div class="apostle-pills" id="apostle-pills" role="group" aria-label="門徒多選篩選"></div>
+
+      <div class="preset-actions">
+        <button class="preset-btn" data-preset="paul-peter-mark">保羅＋彼得＋馬可</button>
+        <button class="preset-btn" data-preset="jerusalem-core">彼得＋雅各＋約翰</button>
+        <button class="preset-btn" data-preset="all">全選（9位）</button>
+      </div>
+    </header>
+
+    <!-- 2. 上方全幅互動地圖 -->
+    <section class="map-section" aria-label="地中海宣教互動地圖">
+      <div class="map-overlay-tl">
+        <div class="year-hud" id="year-hud">年代：30 AD</div>
+        <div class="legend-hud">
+          <span>實線＝正典／早期文獻</span>
+          <span>虛線＝教會傳統推估</span>
+          <span>圓圈數字＝行程順序（1, 2, 3...）</span>
+        </div>
+      </div>
+
+      <div class="map-controls-tr">
+        <button class="map-btn" id="zoom-in" title="放大地圖">＋</button>
+        <button class="map-btn" id="zoom-out" title="縮小地圖">－</button>
+        <button class="map-btn wide" id="zoom-reset" title="重設視角">重設視角</button>
+      </div>
+
+      <svg id="med-map" viewBox="0 0 1000 460" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <pattern id="sea-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(56, 189, 248, 0.05)" stroke-width="1"/>
+          </pattern>
+        </defs>
+
+        <g id="viewport-group">
+          <!-- 海域底色與格線 -->
+          <rect x="-400" y="-300" width="1800" height="1100" fill="#0d1b2d" />
+          <rect x="-400" y="-300" width="1800" height="1100" fill="url(#sea-grid)" />
+
+          <!-- 簡化地中海與周邊陸塊輪廓（座標對應 1000x460） -->
+          <!-- 義大利半島 -->
+          <path class="land-mass" d="M 345,45 L 435,45 L 455,95 L 485,155 L 520,185 L 505,198 L 475,172 L 458,205 L 438,195 L 448,150 L 415,115 L 365,110 L 345,85 Z" />
+          <!-- 西西里島 -->
+          <polygon class="land-mass" points="435,212 478,210 465,232 432,225" />
+          <!-- 希臘與巴爾幹南部 -->
+          <path class="land-mass" d="M 525,45 L 635,45 L 630,135 L 595,165 L 580,205 L 555,198 L 545,165 L 515,150 L 525,115 Z" />
+          <!-- 克里特島 -->
+          <polygon class="land-mass" points="555,235 628,238 625,248 553,245" />
+          <!-- 小亞細亞（安那托利亞） -->
+          <path class="land-mass" d="M 635,115 L 725,105 L 835,105 L 875,145 L 865,205 L 775,215 L 690,210 L 642,175 Z" />
+          <!-- 塞浦路斯 -->
+          <polygon class="land-mass" points="755,242 802,235 805,246 758,252" />
+          <!-- 敘利亞與黎凡特／猶太地 -->
+          <path class="land-mass" d="M 865,145 L 945,145 L 945,355 L 835,355 L 838,315 L 865,285 L 862,215 Z" />
+          <!-- 埃及與北非海岸 -->
+          <path class="land-mass" d="M 240,265 L 365,272 L 495,295 L 645,325 L 765,332 L 838,332 L 838,440 L 240,440 Z" />
+          <!-- 西班牙東南部邊緣 -->
+          <path class="land-mass" d="M 240,45 L 345,45 L 345,135 L 285,175 L 240,170 Z" />
+
+          <!-- 區域水紋字 -->
+          <text x="455" y="275" class="region-label">地中海 MEDITERRANEAN SEA</text>
+          <text x="720" y="165" class="region-label">小亞細亞</text>
+          <text x="555" y="120" class="region-label">希臘</text>
+          <text x="735" y="385" class="region-label">埃及</text>
+
+          <!-- 路徑層、節點層、標籤層 -->
+          <g id="routes-layer"></g>
+          <g id="nodes-layer"></g>
+          <g id="labels-layer"></g>
+        </g>
+      </svg>
+    </section>
+
+    <!-- 3. 下方放大字體雙欄資訊區 -->
+    <section class="bottom-grid">
+      <!-- 左欄：站點與門徒敘事 -->
+      <article class="info-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span>宣教站點與歷史敘事</span>
+          </div>
+          <div class="step-nav">
+            <button class="step-btn" id="prev-step">← 上一站</button>
+            <span id="step-counter" style="font-size:14px; color:var(--text-muted); min-width:56px; text-align:center;">1 / 1</span>
+            <button class="step-btn" id="next-step">下一站 →</button>
+          </div>
+        </div>
+        <div class="narrative-scroll" id="narrative-content"></div>
+      </article>
+
+      <!-- 右欄：各地停留時間比較 -->
+      <aside class="info-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span>各地停留時間比較（月數）</span>
+          </div>
+          <span id="total-months-badge" style="font-size:13px; color:var(--accent-gold); font-weight:700;"></span>
+        </div>
+        <div class="duration-list" id="duration-list"></div>
+      </aside>
+    </section>
+
+    <!-- 4. 底部 30–100 AD 年代時間軸 -->
+    <footer class="timeline-bar">
+      <div class="play-controls">
+        <button class="tl-btn" id="play-btn">▶ 播放</button>
+        <button class="tl-btn" id="speed-btn">1x</button>
+      </div>
+
+      <div class="slider-wrap">
+        <span style="font-size:13px; color:var(--text-muted);">30 AD</span>
+        <input type="range" id="year-slider" min="30" max="100" value="30" step="1" aria-label="年代滑桿" />
+        <span style="font-size:13px; color:var(--text-muted);">100 AD</span>
+      </div>
+
+      <div class="milestone-btns">
+        <button class="ms-btn" data-year="30">30 五旬節</button>
+        <button class="ms-btn" data-year="49">49 耶路撒冷會議</button>
+        <button class="ms-btn" data-year="64">64 羅馬大火逼迫</button>
+        <button class="ms-btn" data-year="70">70 聖殿被毀</button>
+        <button class="ms-btn" data-year="95">95 拔摩海島</button>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // 城市座標（對應 SVG viewBox 0 0 1000 460）
+    const CITIES = {
+      jerusalem:  { id: "jerusalem",  name: "耶路撒冷",   x: 888, y: 292 },
+      damascus:   { id: "damascus",   name: "大馬士革",   x: 912, y: 242 },
+      antioch:    { id: "antioch",    name: "敘利亞安提阿", x: 896, y: 185 },
+      cyprus:     { id: "cyprus",     name: "塞浦路斯",   x: 780, y: 243 },
+      ephesus:    { id: "ephesus",    name: "以弗所",     x: 662, y: 178 },
+      patmos:     { id: "patmos",     name: "拔摩海島",   x: 632, y: 196 },
+      philippi:   { id: "philippi",   name: "腓立比",     x: 582, y: 84  },
+      corinth:    { id: "corinth",    name: "哥林多",     x: 562, y: 158 },
+      crete:      { id: "crete",      name: "克里特",     x: 590, y: 241 },
+      rome:       { id: "rome",       name: "羅馬",       x: 412, y: 108 },
+      spain:      { id: "spain",      name: "西班牙海岸", x: 268, y: 145 },
+      alexandria: { id: "alexandria", name: "亞歷山卓",   x: 745, y: 334 },
+      blacksea:   { id: "blacksea",   name: "黑海／小亞細亞北", x: 755, y: 95 }
+    };
+
+    // 門徒與使徒資料（含順序 stops、停留月數 months、年代區間、正典/傳統標記）
+    const APOSTLES = [
+      {
+        id: "paul",
+        name: "保羅",
+        color: "#f59e0b",
+        stops: [
+          { city: "jerusalem", start: 30, end: 34, months: 12, source: "canon", ref: "徒 7:58–8:3; 22:3", title: "青年時期與早期逼迫教會", desc: "在耶路撒冷受迦瑪列門下訓練，初期參與反對早期信徒的行動，隨後前往大馬士革。" },
+          { city: "damascus",  start: 34, end: 37, months: 30, source: "canon", ref: "徒 9:1–25; 加 1:17–18", title: "歸信基督與阿拉伯曠野沉潛", desc: "往大馬士革途中遇見復活的主，受洗後在當地與阿拉伯地區沉潛約三年，確立外邦使徒呼召。" },
+          { city: "antioch",   start: 43, end: 49, months: 36, source: "canon", ref: "徒 11:25–26; 13:1–3", title: "敘利亞安提阿教會的核心教師", desc: "與巴拿巴在安提阿牧養教會、建立外邦宣教基地，信徒首次在此被稱為「基督徒」，並由此出發多次宣教。" },
+          { city: "cyprus",    start: 47, end: 48, months: 4,  source: "canon", ref: "徒 13:4–12", title: "第一次宣教旅程首站", desc: "從西流基航向塞浦路斯，走訪撒拉米與帕弗，與巴拿巴同行傳講福音並面對行邪術的以呂馬。" },
+          { city: "corinth",   start: 50, end: 52, months: 18, source: "canon", ref: "徒 18:1–18", title: "哥林多一年半駐留與書信事工", desc: "與亞居拉、百基拉同工織帳篷維生，在哥林多停留一年半，建立穩固群體並寫下帖撒羅尼迦前後書。" },
+          { city: "ephesus",   start: 53, end: 56, months: 30, source: "canon", ref: "徒 19:1–41", title: "以弗所約兩年半深度牧養", desc: "第三次宣教旅程長期駐留以弗所，在推喇奴學房辯道與教導，使亞細亞省眾人聽聞福音，後引發銀匠暴動。" },
+          { city: "rome",      start: 60, end: 64, months: 36, source: "canon", ref: "徒 28:16–31; 提後 4:6–8", title: "羅馬軟禁與晚期書信見證", desc: "上訴凱撒後押解抵羅馬，初期在租屋處自由接待訪客傳道約兩年，後於帝國逼迫中殉道（傳統約 64–67 年）。" },
+          { city: "spain",     start: 62, end: 64, months: 12, source: "trad",  ref: "羅 15:24, 28; 羅馬革利免一書", title: "西行至「地極（西班牙）」傳統推估", desc: "保羅曾表達前往西班牙的計畫；早期教會文獻記載他獲釋後可能曾往西方傳道，屬教會傳統推估。" }
+        ]
+      },
+      {
+        id: "peter",
+        name: "彼得",
+        color: "#38bdf8",
+        stops: [
+          { city: "jerusalem", start: 30, end: 43, months: 96, source: "canon", ref: "徒 1–12 章; 加 2:7–9", title: "耶路撒冷初期教會柱石", desc: "五旬節講道帶領多人信主，長期在耶路撒冷與猶太信徒群體中帶領牧養，直到希律逼迫與蒙天使救出。" },
+          { city: "antioch",   start: 44, end: 50, months: 18, source: "canon", ref: "加 2:11–14", title: "安提阿與外邦信徒共餐互動", desc: "曾前往敘利亞安提阿與當地信徒往來，並在飲食與律法界線議題上與保羅有坦率對話。" },
+          { city: "rome",      start: 58, end: 65, months: 48, source: "trad",  ref: "彼前 5:13; 早期教會傳統", title: "羅馬晚年牧養與殉道見證", desc: "早期教會傳統普遍記載彼得晚年在羅馬服事並殉道；書信中提及「在巴比倫的教會」常被解讀為羅馬的隱喻。" }
+        ]
+      },
+      {
+        id: "john",
+        name: "約翰",
+        color: "#a78bfa",
+        stops: [
+          { city: "jerusalem", start: 30, end: 52, months: 144, source: "canon", ref: "徒 3–4; 8:14; 加 2:9", title: "耶路撒冷早期核心使徒", desc: "與彼得同工醫治與見證，曾奉差往撒馬利亞按手使人領受聖靈，並被保羅稱為教會的「柱石」之一。" },
+          { city: "ephesus",   start: 65, end: 94, months: 180, source: "trad",  ref: "愛任紐《反異端》; 教會史", title: "以弗所長期牧養與約翰書信傳統", desc: "教會傳統記載約翰晚年定居以弗所，牧養亞細亞眾教會、寫下約翰福音與書信，並守護群體信仰純正。" },
+          { city: "patmos",    start: 94, end: 97, months: 24,  source: "canon", ref: "啟 1:9", title: "拔摩海島流放與《啟示錄》異象", desc: "在羅馬帝國政權逼迫下被流放至愛琴海的拔摩海島，領受並寫下給亞細亞七教會的《啟示錄》。" }
+        ]
+      },
+      {
+        id: "mark",
+        name: "馬可",
+        color: "#34d399",
+        stops: [
+          { city: "jerusalem", start: 30, end: 44, months: 60, source: "canon", ref: "徒 12:12", title: "耶路撒冷母親馬利亞家聚會中心", desc: "約翰馬可的家在耶路撒冷是早期信徒聚集禱告的重要場所，彼得脫險後也曾前往該處。" },
+          { city: "antioch",   start: 45, end: 47, months: 18, source: "canon", ref: "徒 12:25; 13:5, 13", title: "隨巴拿巴與保羅展開宣教", desc: "自耶路撒冷隨巴拿巴與保羅到安提阿，並於第一次宣教旅程初期擔任幫手，後在旁非利亞折返。" },
+          { city: "rome",      start: 60, end: 65, months: 36, source: "canon", ref: "西 4:10; 門 24; 提後 4:11", title: "在羅馬與保羅、彼得同工並撰寫福音", desc: "與保羅和好並成為得力同工；教會傳統指出他在羅馬整理彼得宣講記憶，寫成《馬可福音》。" },
+          { city: "alexandria",start: 62, end: 68, months: 48, source: "trad",  ref: "優西比烏《教會史》", title: "亞歷山卓教會創立傳統", desc: "早期教會傳統認為馬可前往埃及亞歷山卓傳道並建立當地教會，成為埃及科普特教會的重要源頭。" }
+        ]
+      },
+      {
+        id: "james_bro",
+        name: "主耶穌的兄弟雅各",
+        color: "#f472b6",
+        stops: [
+          { city: "jerusalem", start: 34, end: 62, months: 240, source: "canon", ref: "徒 12:17; 15:13; 加 1:19; 2:9", title: "耶路撒冷教會長期領袖", desc: "復活後蒙主顯現而歸信，長期駐守耶路撒冷，在耶路撒冷會議中提出決議原則，深具猶太基督徒群體影響力。" }
+        ]
+      },
+      {
+        id: "barnabas",
+        name: "巴拿巴",
+        color: "#fb923c",
+        stops: [
+          { city: "jerusalem", start: 32, end: 42, months: 48, source: "canon", ref: "徒 4:36–37; 9:27", title: "慷慨奉獻與引薦保羅", desc: "原名約瑟，賣田產奉獻使徒腳前，並在保羅剛歸信、眾人存疑時挺身向使徒引薦保羅。" },
+          { city: "antioch",   start: 42, end: 49, months: 48, source: "canon", ref: "徒 11:22–26; 13:1", title: "安提阿教會拓荒與帶領者", desc: "受耶路撒冷教會差派到安提阿，見證外邦人歸主並前往大數尋找保羅一同牧養教會。" },
+          { city: "cyprus",    start: 47, end: 51, months: 24, source: "canon", ref: "徒 13:4; 15:39", title: "塞浦路斯宣教與後續同行", desc: "家鄉在塞浦路斯，多次前往當地傳揚福音；與保羅因馬可一事分道後，仍持續在塞浦路斯事工。" }
+        ]
+      },
+      {
+        id: "philip",
+        name: "腓力（傳福音的）",
+        color: "#2dd4bf",
+        stops: [
+          { city: "jerusalem", start: 30, end: 35, months: 24, source: "canon", ref: "徒 6:5; 8:1", title: "七位執事之一與早期服事", desc: "在耶路撒冷被選為管理飯食與關懷需要的七位同工之一，具備好名聲、智慧與聖靈充滿。" },
+          { city: "damascus",  start: 36, end: 45, months: 36, source: "canon", ref: "徒 8:26–40", title: "沿海宣教路線與埃塞俄比亞太監", desc: "沿猶太沿海城鎮傳道，在往迦薩路上向埃塞俄比亞太監講解《以賽亞書》並為其施洗，隨後一路傳至該撒利亞。" }
+        ]
+      },
+      {
+        id: "andrew",
+        name: "安得烈",
+        color: "#60a5fa",
+        stops: [
+          { city: "jerusalem", start: 30, end: 38, months: 36, source: "canon", ref: "徒 1:13", title: "耶路撒冷初期門徒群體", desc: "身為最早跟隨耶穌的門徒之一，復活後與其他門徒在耶路撒冷同心禱告等候並見證復活。" },
+          { city: "blacksea",  start: 45, end: 65, months: 120, source: "trad",  ref: "優西比烏《教會史》; 早期傳統", title: "黑海與小亞細亞北部傳道傳統", desc: "教會傳統記載安得烈往北至黑海沿岸與希臘地區傳道，向希臘文化圈群體見證福音。" }
+        ]
+      },
+      {
+        id: "thomas",
+        name: "多馬",
+        color: "#facc15",
+        stops: [
+          { city: "jerusalem", start: 30, end: 38, months: 36, source: "canon", ref: "約 20:24–29; 徒 1:13", title: "從懷疑到 confessing「我的主、我的神」", desc: "復活初期親眼見證並宣告信仰，隨後與眾門徒在耶路撒冷一同參與早期教會生活。" },
+          { city: "damascus",  start: 40, end: 52, months: 72, source: "trad",  ref: "敘利亞教會傳統", title: "敘利亞與美索不達米亞東方路線", desc: "東方教會傳統記載多馬往敘利亞、帕提亞等東方地區傳道（之後更向印度延伸），在敘利亞教會擁有極高地位。" }
+        ]
+      }
+    ];
+
+    // 狀態管理
+    const state = {
+      selectedIds: new Set(["paul", "peter", "mark"]),
+      activeApostleId: "paul",
+      selectedStopIndex: 0,
+      year: 30,
+      playing: false,
+      playSpeed: 1,
+      zoom: 1,
+      panX: 0,
+      panY: 0,
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0
+    };
+
+    const svgEl = document.getElementById("med-map");
+    const viewportEl = document.getElementById("viewport-group");
+    const routesLayer = document.getElementById("routes-layer");
+    const nodesLayer = document.getElementById("nodes-layer");
+    const labelsLayer = document.getElementById("labels-layer");
+    const pillsContainer = document.getElementById("apostle-pills");
+    const narrativeEl = document.getElementById("narrative-content");
+    const durationListEl = document.getElementById("duration-list");
+    const yearSlider = document.getElementById("year-slider");
+    const yearHud = document.getElementById("year-hud");
+    const stepCounterEl = document.getElementById("step-counter");
+    const prevStepBtn = document.getElementById("prev-step");
+    const nextStepBtn = document.getElementById("next-step");
+    const playBtn = document.getElementById("play-btn");
+    const speedBtn = document.getElementById("speed-btn");
+    const totalMonthsBadge = document.getElementById("total-months-badge");
+
+    let playTimer = null;
+
+    function getSelectedApostles() {
+      return APOSTLES.filter(a => state.selectedIds.has(a.id));
+    }
+
+    function ensureActiveApostleValid() {
+      const selected = getSelectedApostles();
+      if (selected.length === 0) {
+        state.selectedIds.add("paul");
+        state.activeApostleId = "paul";
+        state.selectedStopIndex = 0;
+        return;
+      }
+      if (!state.selectedIds.has(state.activeApostleId)) {
+        state.activeApostleId = selected[0].id;
+        state.selectedStopIndex = 0;
+      }
+      const active = APOSTLES.find(a => a.id === state.activeApostleId);
+      if (state.selectedStopIndex >= active.stops.length) {
+        state.selectedStopIndex = 0;
+      }
+    }
+
+    function renderPills() {
+      pillsContainer.innerHTML = "";
+      APOSTLES.forEach(ap => {
+        const isSelected = state.selectedIds.has(ap.id);
+        const isFocused = state.activeApostleId === ap.id;
+        const btn = document.createElement("button");
+        btn.className = "apostle-chip" + (isSelected ? " active" : "");
+        btn.style.backgroundColor = isSelected ? ap.color : "";
+        btn.style.outline = isFocused && isSelected ? "2px solid #ffffff" : "none";
+        btn.innerHTML = `<span class="chip-dot" style="background:${isSelected ? "#0b111a" : ap.color}"></span>${ap.name}`;
+        btn.addEventListener("click", () => {
+          if (state.selectedIds.has(ap.id)) {
+            if (state.selectedIds.size > 1) {
+              state.selectedIds.delete(ap.id);
+            }
+          } else {
+            state.selectedIds.add(ap.id);
+          }
+          state.activeApostleId = ap.id;
+          state.selectedStopIndex = 0;
+          ensureActiveApostleValid();
+          renderAll();
+        });
+        pillsContainer.appendChild(btn);
+      });
+    }
+
+    function applyTransform() {
+      viewportEl.setAttribute(
+        "transform",
+        `translate(${state.panX}, ${state.panY}) scale(${state.zoom})`
+      );
+    }
+
+    function renderMap() {
+      routesLayer.innerHTML = "";
+      nodesLayer.innerHTML = "";
+      labelsLayer.innerHTML = "";
+
+      const selected = getSelectedApostles();
+      const cityGroups = {}; // 同一城市聚集多位門徒／多站點時的錯開索引
+
+      selected.forEach(ap => {
+        const isFocused = ap.id === state.activeApostleId;
+        const stops = ap.stops;
+
+        // 繪製相鄰站點連線
+        for (let i = 0; i < stops.length - 1; i++) {
+          const fromCity = CITIES[stops[i].city];
+          const toCity = CITIES[stops[i + 1].city];
+          if (!fromCity || !toCity) continue;
+
+          const activeByYear = state.year >= stops[i + 1].start;
+          const isTraditional = stops[i + 1].source === "trad";
+
+          const dx = toCity.x - fromCity.x;
+          const dy = toCity.y - fromCity.y;
+          const midX = (fromCity.x + toCity.x) / 2 - dy * 0.14;
+          const midY = (fromCity.y + toCity.y) / 2 + dx * 0.14;
+
+          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          path.setAttribute("d", `M ${fromCity.x} ${fromCity.y} Q ${midX} ${midY} ${toCity.x} ${toCity.y}`);
+          path.setAttribute("class", "route-path");
+          path.setAttribute("stroke", ap.color);
+          path.setAttribute("stroke-width", isFocused ? "3.2" : "2.1");
+          path.setAttribute("opacity", activeByYear ? (isFocused ? "0.95" : "0.62") : "0.18");
+          if (isTraditional) {
+            path.setAttribute("stroke-dasharray", "6,5");
+          }
+          routesLayer.appendChild(path);
+        }
+
+        // 繪製站點編號徽章（1, 2, 3...）
+        stops.forEach((st, idx) => {
+          const c = CITIES[st.city];
+          if (!c) return;
+
+          if (!cityGroups[c.id]) cityGroups[c.id] = [];
+          const slotIndex = cityGroups[c.id].length;
+          cityGroups[c.id].push({ ap, st, idx });
+
+          // 交會城市自動錯開，避免重疊
+          const angle = slotIndex * 1.15;
+          const radiusOffset = slotIndex === 0 ? 0 : 14 + Math.floor(slotIndex / 3) * 6;
+          const nx = c.x + Math.cos(angle) * radiusOffset;
+          const ny = c.y + Math.sin(angle) * radiusOffset;
+
+          const reached = state.year >= st.start;
+          const isCurrent = isFocused && state.selectedStopIndex === idx;
+
+          if (isCurrent) {
+            const halo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            halo.setAttribute("cx", nx);
+            halo.setAttribute("cy", ny);
+            halo.setAttribute("r", "15");
+            halo.setAttribute("fill", "none");
+            halo.setAttribute("stroke", "#ffffff");
+            halo.setAttribute("stroke-width", "2.2");
+            halo.setAttribute("opacity", "0.9");
+            nodesLayer.appendChild(halo);
+          }
+
+          const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          circle.setAttribute("cx", nx);
+          circle.setAttribute("cy", ny);
+          circle.setAttribute("r", isCurrent ? "11" : "9.5");
+          circle.setAttribute("fill", ap.color);
+          circle.setAttribute("stroke", "#0b111a");
+          circle.setAttribute("stroke-width", "1.6");
+          circle.setAttribute("opacity", reached ? "1" : "0.32");
+          circle.style.cursor = "pointer";
+
+          circle.addEventListener("click", (e) => {
+            e.stopPropagation();
+            state.activeApostleId = ap.id;
+            state.selectedStopIndex = idx;
+            state.year = st.start;
+            yearSlider.value = st.start;
+            renderAll();
+          });
+
+          const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          text.setAttribute("x", nx);
+          text.setAttribute("y", ny);
+          text.setAttribute("class", "node-badge-text");
+          text.setAttribute("opacity", reached ? "1" : "0.45");
+          text.textContent = String(idx + 1);
+
+          nodesLayer.appendChild(circle);
+          nodesLayer.appendChild(text);
+        });
+      });
+
+      // 繪製城市地名標籤
+      Object.values(CITIES).forEach(c => {
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute("x", c.x);
+        label.setAttribute("y", c.y - 14);
+        label.setAttribute("text-anchor", "middle");
+        label.setAttribute("class", "city-label");
+        label.textContent = c.name;
+        labelsLayer.appendChild(label);
+      });
+    }
+
+    function renderNarrative() {
+      const activeApostle = APOSTLES.find(a => a.id === state.activeApostleId) || APOSTLES[0];
+      const stop = activeApostle.stops[state.selectedStopIndex] || activeApostle.stops[0];
+      const city = CITIES[stop.city];
+
+      stepCounterEl.textContent = `${state.selectedStopIndex + 1} / ${activeApostle.stops.length}`;
+      prevStepBtn.disabled = state.selectedStopIndex <= 0;
+      nextStepBtn.disabled = state.selectedStopIndex >= activeApostle.stops.length - 1;
+
+      const sourceClass = stop.source === "canon" ? "pill-source-canon" : "pill-source-trad";
+      const sourceLabel = stop.source === "canon" ? "正典／早期文獻記載" : "早期教會傳統推估";
+
+      narrativeEl.innerHTML = `
+        <div class="narrative-meta">
+          <span class="pill-tag" style="background:${activeApostle.color}26; color:${activeApostle.color}; border-color:${activeApostle.color}88;">
+            ${activeApostle.name}・第 ${state.selectedStopIndex + 1} 站
+          </span>
+          <span class="pill-tag">${city ? city.name : ""}（約 ${stop.start}–${stop.end} AD）</span>
+          <span class="pill-tag">停留約 ${stop.months} 個月</span>
+          <span class="pill-tag ${sourceClass}">${sourceLabel}</span>
+        </div>
+        <div class="narrative-heading">${stop.title}</div>
+        <p>${stop.desc}</p>
+        <p style="margin-top:6px; font-size:14px; color:var(--text-muted);">文獻／經文依據：${stop.ref}</p>
+      `;
+    }
+
+    function renderDurationChart() {
+      const selected = getSelectedApostles();
+      // 彙整各城市在已選門徒中的停留月數明細
+      const cityMap = new Map();
+
+      selected.forEach(ap => {
+        ap.stops.forEach((st, idx) => {
+          const c = CITIES[st.city];
+          if (!c) return;
+          if (!cityMap.has(c.id)) {
+            cityMap.set(c.id, {
+              cityId: c.id,
+              cityName: c.name,
+              totalMonths: 0,
+              segments: [],
+              firstMatch: { apostleId: ap.id, stopIndex: idx, startYear: st.start }
+            });
+          }
+          const entry = cityMap.get(c.id);
+          entry.totalMonths += st.months;
+          entry.segments.push({
+            apostleId: ap.id,
+            apostleName: ap.name,
+            color: ap.color,
+            months: st.months,
+            stopIndex: idx,
+            startYear: st.start
+          });
+        });
+      });
+
+      const rows = Array.from(cityMap.values()).sort((a, b) => b.totalMonths - a.totalMonths);
+      const maxMonths = rows.length > 0 ? Math.max(...rows.map(r => r.totalMonths)) : 1;
+      const grandTotal = rows.reduce((acc, r) => acc + r.totalMonths, 0);
+      totalMonthsBadge.textContent = `合計 ${grandTotal} 個月`;
+
+      const activeApostle = APOSTLES.find(a => a.id === state.activeApostleId) || APOSTLES[0];
+      const currentStop = activeApostle.stops[state.selectedStopIndex];
+
+      durationListEl.innerHTML = "";
+      rows.forEach(row => {
+        const isSelectedCity = currentStop && currentStop.city === row.cityId;
+        const rowEl = document.createElement("div");
+        rowEl.className = "duration-row" + (isSelectedCity ? " selected" : "");
+
+        const segHtml = row.segments.map(seg => {
+          const widthPct = (seg.months / maxMonths) * 100;
+          return `<div class="bar-seg" style="width:${widthPct.toFixed(1)}%; background:${seg.color};" title="${seg.apostleName}：${seg.months} 個月"></div>`;
+        }).join("");
+
+        const detailText = row.segments.map(s => `${s.apostleName} ${s.months}M`).join("、");
+
+        rowEl.innerHTML = `
+          <div class="duration-row-top">
+            <span>${row.cityName}</span>
+            <span class="duration-val">${row.totalMonths} 個月</span>
+          </div>
+          <div class="bar-track">${segHtml}</div>
+          <div class="bar-caption">
+            <span>${detailText}</span>
+            <span>點擊跳轉</span>
+          </div>
+        `;
+
+        rowEl.addEventListener("click", () => {
+          // 優先跳轉至目前聚焦門徒在該城市的站點，否則跳轉至首位已選門徒
+          const preferred = row.segments.find(s => s.apostleId === state.activeApostleId) || row.segments[0];
+          if (preferred) {
+            state.activeApostleId = preferred.apostleId;
+            state.selectedStopIndex = preferred.stopIndex;
+            state.year = preferred.startYear;
+            yearSlider.value = preferred.startYear;
+            renderAll();
+          }
+        });
+
+        durationListEl.appendChild(rowEl);
+      });
+    }
+
+    function renderAll() {
+      yearHud.textContent = `年代：${state.year} AD`;
+      renderPills();
+      renderMap();
+      renderNarrative();
+      renderDurationChart();
+    }
+
+    // 步驟切換
+    prevStepBtn.addEventListener("click", () => {
+      const ap = APOSTLES.find(a => a.id === state.activeApostleId);
+      if (ap && state.selectedStopIndex > 0) {
+        state.selectedStopIndex -= 1;
+        state.year = ap.stops[state.selectedStopIndex].start;
+        yearSlider.value = state.year;
+        renderAll();
+      }
+    });
+
+    nextStepBtn.addEventListener("click", () => {
+      const ap = APOSTLES.find(a => a.id === state.activeApostleId);
+      if (ap && state.selectedStopIndex < ap.stops.length - 1) {
+        state.selectedStopIndex += 1;
+        state.year = ap.stops[state.selectedStopIndex].start;
+        yearSlider.value = state.year;
+        renderAll();
+      }
+    });
+
+    // 預設組合按鈕
+    document.querySelectorAll(".preset-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const mode = btn.dataset.preset;
+        state.selectedIds.clear();
+        if (mode === "paul-peter-mark") {
+          ["paul", "peter", "mark"].forEach(id => state.selectedIds.add(id));
+          state.activeApostleId = "paul";
+        } else if (mode === "jerusalem-core") {
+          ["peter", "james_bro", "john"].forEach(id => state.selectedIds.add(id));
+          state.activeApostleId = "peter";
+        } else {
+          APOSTLES.forEach(a => state.selectedIds.add(a.id));
+          state.activeApostleId = "paul";
+        }
+        state.selectedStopIndex = 0;
+        renderAll();
+      });
+    });
+
+    // 時間軸與播放
+    yearSlider.addEventListener("input", (e) => {
+      state.year = Number(e.target.value);
+      renderAll();
+    });
+
+    document.querySelectorAll(".ms-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const y = Number(btn.dataset.year);
+        state.year = y;
+        yearSlider.value = y;
+        renderAll();
+      });
+    });
+
+    function stopPlayback() {
+      state.playing = false;
+      playBtn.textContent = "▶ 播放";
+      playBtn.classList.remove("active-play");
+      if (playTimer) {
+        clearInterval(playTimer);
+        playTimer = null;
+      }
+    }
+
+    function startPlayback() {
+      stopPlayback();
+      state.playing = true;
+      playBtn.textContent = "❚❚ 暫停";
+      playBtn.classList.add("active-play");
+      const intervalMs = state.playSpeed === 1 ? 450 : 220;
+      playTimer = setInterval(() => {
+        if (state.year >= 100) {
+          state.year = 30;
+        } else {
+          state.year += 1;
+        }
+        yearSlider.value = state.year;
+        renderAll();
+      }, intervalMs);
+    }
+
+    playBtn.addEventListener("click", () => {
+      if (state.playing) stopPlayback();
+      else startPlayback();
+    });
+
+    speedBtn.addEventListener("click", () => {
+      state.playSpeed = state.playSpeed === 1 ? 2 : 1;
+      speedBtn.textContent = `${state.playSpeed}x`;
+      if (state.playing) startPlayback();
+    });
+
+    // 地圖縮放與拖曳
+    document.getElementById("zoom-in").addEventListener("click", () => {
+      state.zoom = Math.min(2.6, +(state.zoom + 0.25).toFixed(2));
+      applyTransform();
+    });
+
+    document.getElementById("zoom-out").addEventListener("click", () => {
+      state.zoom = Math.max(0.8, +(state.zoom - 0.25).toFixed(2));
+      applyTransform();
+    });
+
+    document.getElementById("zoom-reset").addEventListener("click", () => {
+      state.zoom = 1;
+      state.panX = 0;
+      state.panY = 0;
+      applyTransform();
+    });
+
+    svgEl.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.15 : -0.15;
+      state.zoom = Math.min(2.6, Math.max(0.8, +(state.zoom + delta).toFixed(2)));
+      applyTransform();
+    }, { passive: false });
+
+    svgEl.addEventListener("pointerdown", (e) => {
+      if (e.target.tagName === "circle") return;
+      state.isDragging = true;
+      state.dragStartX = e.clientX - state.panX;
+      state.dragStartY = e.clientY - state.panY;
+      svgEl.classList.add("dragging");
+    });
+
+    window.addEventListener("pointermove", (e) => {
+      if (!state.isDragging) return;
+      state.panX = e.clientX - state.dragStartX;
+      state.panY = e.clientY - state.dragStartY;
+      applyTransform();
+    });
+
+    window.addEventListener("pointerup", () => {
+      state.isDragging = false;
+      svgEl.classList.remove("dragging");
+    });
+
+    // 初始渲染
+    renderAll();
+  </script>
+</body>
+</html>
