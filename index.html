@@ -147,11 +147,11 @@
       background: rgba(234, 179, 8, 0.14);
     }
 
-    /* 2. 門徒多選列（單行橫向捲動不換行） */
+    /* 2. 門徒多選列（單行橫向捲動不換行，允許零選取） */
     .top-bar {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: space-between;
       gap: 8px;
       background: var(--bg-panel);
       border: 1px solid var(--border-subtle);
@@ -207,6 +207,26 @@
       flex-shrink: 0;
     }
 
+    .clear-selection-btn {
+      padding: 3px 9px;
+      border-radius: 7px;
+      border: 1px solid var(--border-subtle);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      min-height: 28px;
+    }
+
+    .clear-selection-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+      background: var(--bg-card);
+    }
+
     /* 3. 地圖區塊 */
     .map-section {
       position: relative;
@@ -222,8 +242,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      padding: 7px 12px;
+      gap: 6px;
+      padding: 6px 10px;
       background: rgba(13, 19, 29, 0.92);
       border-bottom: 1px solid var(--border-subtle);
       z-index: 6;
@@ -239,12 +259,12 @@
       border: 1px solid var(--border-strong);
       border-radius: 8px;
       padding: 2px;
-      gap: 3px;
+      gap: 2px;
       flex-shrink: 0;
     }
 
     .source-btn {
-      padding: 4px 10px;
+      padding: 3px 9px;
       border-radius: 6px;
       border: none;
       background: transparent;
@@ -253,7 +273,7 @@
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
-      min-height: 30px;
+      min-height: 28px;
     }
 
     .source-btn.active {
@@ -265,23 +285,24 @@
     .map-controls-inline {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       flex-shrink: 0;
     }
 
     .map-btn {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 7px;
       border: 1px solid var(--border-strong);
       background: var(--bg-card);
       color: var(--text-primary);
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     .map-btn:hover {
@@ -291,8 +312,8 @@
 
     .map-btn.wide {
       width: auto;
-      padding: 0 10px;
-      font-size: 13px;
+      padding: 0 8px;
+      font-size: 12.5px;
     }
 
     .map-canvas-wrap {
@@ -345,10 +366,18 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 10px;
       padding-bottom: 8px;
       margin-bottom: 10px;
       border-bottom: 1px solid var(--border-subtle);
+    }
+
+    /* 電腦版：標題與上一站/下一站靠左緊鄰呈現 */
+    .panel-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .panel-title {
@@ -364,15 +393,15 @@
     }
 
     .step-btn {
-      padding: 4px 12px;
+      padding: 4px 11px;
       border-radius: 8px;
       border: 1px solid var(--border-strong);
       background: var(--bg-card);
       color: var(--text-primary);
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 600;
       cursor: pointer;
-      min-height: 32px;
+      min-height: 30px;
     }
 
     .step-btn:hover:not(:disabled) {
@@ -552,7 +581,7 @@
       user-select: none;
     }
 
-    /* 手機版調整（<= 860px）：拿掉地圖上的實線/虛線說明，來源篩選與縮放整齊排佈 */
+    /* 手機版調整（<= 860px）：來源篩選與縮放放在同一行，移除地圖圖例 */
     @media (max-width: 860px) {
       .app-shell {
         gap: 8px;
@@ -574,33 +603,42 @@
       }
 
       .map-toolbar-top {
-        flex-wrap: wrap;
-        gap: 6px;
-        padding: 6px 8px;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: 4px;
+        padding: 5px 6px;
       }
 
       .source-toggle-group {
-        width: 100%;
-        justify-content: space-between;
+        gap: 1px;
+        padding: 1px;
       }
 
       .source-btn {
-        flex: 1;
-        text-align: center;
-        padding: 4px 6px;
-        font-size: 12.5px;
+        padding: 3px 6px;
+        font-size: 11.5px;
+        min-height: 26px;
       }
 
       .map-controls-inline {
-        width: 100%;
-        justify-content: flex-end;
+        gap: 3px;
+      }
+
+      .map-btn {
+        width: 26px;
+        height: 26px;
+        font-size: 13px;
+      }
+
+      .map-btn.wide {
+        padding: 0 6px;
+        font-size: 11.5px;
       }
 
       .map-canvas-wrap {
         height: 255px;
       }
 
-      /* 手機版隱藏地圖上的實線/虛線說明 */
       .legend-hud {
         display: none;
       }
@@ -636,9 +674,10 @@
       </div>
     </header>
 
-    <!-- 2. 門徒多選列（單行橫向捲動不換行） -->
+    <!-- 2. 門徒多選列（單行橫向捲動不換行，允許零選取） -->
     <section class="top-bar" aria-label="門徒多選篩選">
       <div class="apostle-pills" id="apostle-pills" role="group" aria-label="門徒多選篩選"></div>
+      <button class="clear-selection-btn" id="clear-apostles-btn" title="取消所有使徒勾選">全部不選</button>
     </section>
 
     <!-- 3. 地圖（由上而下第一區塊） -->
@@ -646,14 +685,14 @@
       <div class="map-toolbar-top">
         <div class="source-toggle-group" role="group" aria-label="文獻來源篩選">
           <button class="source-btn active" data-source="all">全部來源</button>
-          <button class="source-btn" data-source="canon">正典／早期文獻</button>
-          <button class="source-btn" data-source="trad">虛線教會傳統</button>
+          <button class="source-btn" data-source="canon">正典</button>
+          <button class="source-btn" data-source="trad">虛線傳統</button>
         </div>
 
         <div class="map-controls-inline">
           <button class="map-btn" id="zoom-in" title="放大地圖">＋</button>
           <button class="map-btn" id="zoom-out" title="縮小地圖">－</button>
-          <button class="map-btn wide" id="zoom-reset" title="重設視角">重設視角</button>
+          <button class="map-btn wide" id="zoom-reset" title="重設視角">重設</button>
         </div>
       </div>
 
@@ -701,11 +740,13 @@
     <!-- 4. 宣教站點與歷史敘事（由上而下第二區塊） -->
     <article class="info-panel">
       <div class="panel-header">
-        <div class="panel-title">宣教站點與歷史敘事</div>
-        <div class="step-nav">
-          <button class="step-btn" id="prev-step">← 上一站</button>
-          <span id="step-counter" style="font-size:14px; color:var(--text-muted); min-width:56px; text-align:center;">1 / 1</span>
-          <button class="step-btn" id="next-step">下一站 →</button>
+        <div class="panel-header-left">
+          <div class="panel-title">宣教站點與歷史敘事</div>
+          <div class="step-nav">
+            <button class="step-btn" id="prev-step">← 上一站</button>
+            <span id="step-counter" style="font-size:14px; color:var(--text-muted); min-width:56px; text-align:center;">1 / 1</span>
+            <button class="step-btn" id="next-step">下一站 →</button>
+          </div>
         </div>
       </div>
       <div class="narrative-body" id="narrative-content"></div>
@@ -852,6 +893,7 @@
     const nodesLayer = document.getElementById("nodes-layer");
     const labelsLayer = document.getElementById("labels-layer");
     const pillsContainer = document.getElementById("apostle-pills");
+    const clearApostlesBtn = document.getElementById("clear-apostles-btn");
     const narrativeEl = document.getElementById("narrative-content");
     const durationListEl = document.getElementById("duration-list");
     const yearSlider = document.getElementById("year-slider");
@@ -877,18 +919,20 @@
     function ensureSelectionValid() {
       const selected = getSelectedApostles();
       if (selected.length === 0) {
-        state.selectedIds.add("paul");
-        state.activeApostleId = "paul";
+        state.activeApostleId = null;
         state.selectedStopIndex = 0;
+        return;
       }
-      if (!state.selectedIds.has(state.activeApostleId)) {
-        state.activeApostleId = Array.from(state.selectedIds)[0];
+      if (!state.activeApostleId || !state.selectedIds.has(state.activeApostleId)) {
+        state.activeApostleId = selected[0].id;
         state.selectedStopIndex = 0;
       }
       const active = APOSTLES.find(a => a.id === state.activeApostleId);
-      const stops = getFilteredStops(active);
-      if (stops.length > 0 && state.selectedStopIndex >= stops.length) {
-        state.selectedStopIndex = 0;
+      if (active) {
+        const stops = getFilteredStops(active);
+        if (stops.length > 0 && state.selectedStopIndex >= stops.length) {
+          state.selectedStopIndex = 0;
+        }
       }
     }
 
@@ -904,20 +948,30 @@
         btn.innerHTML = `<span class="chip-dot" style="background:${isSelected ? "#0b111a" : ap.color}"></span>${ap.name}`;
         btn.addEventListener("click", () => {
           if (state.selectedIds.has(ap.id)) {
-            if (state.selectedIds.size > 1) {
-              state.selectedIds.delete(ap.id);
+            state.selectedIds.delete(ap.id);
+            if (state.activeApostleId === ap.id) {
+              const remaining = Array.from(state.selectedIds);
+              state.activeApostleId = remaining.length > 0 ? remaining[0] : null;
+              state.selectedStopIndex = 0;
             }
           } else {
             state.selectedIds.add(ap.id);
+            state.activeApostleId = ap.id;
+            state.selectedStopIndex = 0;
           }
-          state.activeApostleId = ap.id;
-          state.selectedStopIndex = 0;
           ensureSelectionValid();
           renderAll();
         });
         pillsContainer.appendChild(btn);
       });
     }
+
+    clearApostlesBtn.addEventListener("click", () => {
+      state.selectedIds.clear();
+      state.activeApostleId = null;
+      state.selectedStopIndex = 0;
+      renderAll();
+    });
 
     function applyTransform() {
       viewportEl.setAttribute(
@@ -1034,7 +1088,19 @@
     }
 
     function renderNarrative() {
-      const activeApostle = APOSTLES.find(a => a.id === state.activeApostleId) || APOSTLES[0];
+      const selected = getSelectedApostles();
+      if (selected.length === 0 || !state.activeApostleId) {
+        stepCounterEl.textContent = "0 / 0";
+        prevStepBtn.disabled = true;
+        nextStepBtn.disabled = true;
+        narrativeEl.innerHTML = `
+          <div class="narrative-heading">目前尚未選擇任何使徒</div>
+          <p>您可點選上方任一位使徒標籤查看宣教站點與歷史敘事；留空時地圖仍可自由拖曳縮放與檢視各城鎮位置。</p>
+        `;
+        return;
+      }
+
+      const activeApostle = APOSTLES.find(a => a.id === state.activeApostleId) || selected[0];
       const stops = getFilteredStops(activeApostle);
 
       if (stops.length === 0) {
@@ -1043,7 +1109,7 @@
         nextStepBtn.disabled = true;
         narrativeEl.innerHTML = `
           <div class="narrative-heading">${activeApostle.name}在此來源篩選下無對應站點</div>
-          <p>請切換上方「全部來源」或改選其他門徒查看該類別記載。</p>
+          <p>請切換「全部來源」或改選其他使徒查看該類別記載。</p>
         `;
         return;
       }
@@ -1107,13 +1173,18 @@
       const rows = Array.from(cityMap.values()).sort((a, b) => b.totalMonths - a.totalMonths);
       const maxMonths = rows.length > 0 ? Math.max(...rows.map(r => r.totalMonths)) : 1;
       const grandTotal = rows.reduce((acc, r) => acc + r.totalMonths, 0);
-      totalMonthsBadge.textContent = `合計 ${grandTotal} 個月`;
+      totalMonthsBadge.textContent = selected.length === 0 ? "未選取使徒" : `合計 ${grandTotal} 個月`;
 
-      const activeApostle = APOSTLES.find(a => a.id === state.activeApostleId) || APOSTLES[0];
-      const activeStops = getFilteredStops(activeApostle);
+      const activeApostle = state.activeApostleId ? APOSTLES.find(a => a.id === state.activeApostleId) : null;
+      const activeStops = activeApostle ? getFilteredStops(activeApostle) : [];
       const currentStop = activeStops[state.selectedStopIndex];
 
       durationListEl.innerHTML = "";
+      if (selected.length === 0) {
+        durationListEl.innerHTML = `<p style="color:var(--text-muted); font-size:15px;">目前未選擇任何使徒，點選上方使徒即可比較各地停留月數。</p>`;
+        return;
+      }
+
       if (rows.length === 0) {
         durationListEl.innerHTML = `<p style="color:var(--text-muted); font-size:15px;">目前篩選條件下無停留月數資料。</p>`;
         return;
@@ -1178,6 +1249,7 @@
     });
 
     prevStepBtn.addEventListener("click", () => {
+      if (!state.activeApostleId) return;
       const ap = APOSTLES.find(a => a.id === state.activeApostleId);
       const stops = getFilteredStops(ap);
       if (stops.length > 0 && state.selectedStopIndex > 0) {
@@ -1189,6 +1261,7 @@
     });
 
     nextStepBtn.addEventListener("click", () => {
+      if (!state.activeApostleId) return;
       const ap = APOSTLES.find(a => a.id === state.activeApostleId);
       const stops = getFilteredStops(ap);
       if (stops.length > 0 && state.selectedStopIndex < stops.length - 1) {
@@ -1223,7 +1296,6 @@
       }
     }
 
-    // 單次播放（播到 100 AD 自動停止，不循環）
     function startPlayback() {
       stopPlayback();
       if (state.year >= 100) {
