@@ -147,11 +147,11 @@
       background: rgba(234, 179, 8, 0.14);
     }
 
-    /* 2. 門徒多選列（單行橫向捲動不換行，允許零選取） */
+    /* 2. 門徒多選列（單行橫向捲動不換行，靠左排列，允許零選取） */
     .top-bar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 8px;
       background: var(--bg-panel);
       border: 1px solid var(--border-subtle);
@@ -677,7 +677,7 @@
     <!-- 2. 門徒多選列（單行橫向捲動不換行，允許零選取） -->
     <section class="top-bar" aria-label="門徒多選篩選">
       <div class="apostle-pills" id="apostle-pills" role="group" aria-label="門徒多選篩選"></div>
-      <button class="clear-selection-btn" id="clear-apostles-btn" title="取消所有使徒勾選">全部不選</button>
+      <button class="clear-selection-btn" id="select-all-apostles-btn" title="勾選所有使徒">全部都選</button>
     </section>
 
     <!-- 3. 地圖（由上而下第一區塊） -->
@@ -893,7 +893,7 @@
     const nodesLayer = document.getElementById("nodes-layer");
     const labelsLayer = document.getElementById("labels-layer");
     const pillsContainer = document.getElementById("apostle-pills");
-    const clearApostlesBtn = document.getElementById("clear-apostles-btn");
+    const selectAllApostlesBtn = document.getElementById("select-all-apostles-btn");
     const narrativeEl = document.getElementById("narrative-content");
     const durationListEl = document.getElementById("duration-list");
     const yearSlider = document.getElementById("year-slider");
@@ -966,10 +966,13 @@
       });
     }
 
-    clearApostlesBtn.addEventListener("click", () => {
-      state.selectedIds.clear();
-      state.activeApostleId = null;
-      state.selectedStopIndex = 0;
+    selectAllApostlesBtn.addEventListener("click", () => {
+      APOSTLES.forEach(ap => state.selectedIds.add(ap.id));
+      if (!state.activeApostleId || !state.selectedIds.has(state.activeApostleId)) {
+        state.activeApostleId = APOSTLES[0].id;
+        state.selectedStopIndex = 0;
+      }
+      ensureSelectionValid();
       renderAll();
     });
 
