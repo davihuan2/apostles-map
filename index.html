@@ -853,6 +853,32 @@
       </div>
       <div class="duration-list" id="duration-list"></div>
     </aside>
+
+    <!-- 6. 網站最下方資料來源與考據備注說明 -->
+    <footer style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 14px 18px; font-size: 14px; line-height: 1.7; color: var(--text-secondary);">
+      <div style="font-weight: 700; font-size: 15px; color: var(--text-primary); margin-bottom: 6px;">資料來源與考據說明</div>
+      <p style="margin-bottom: 8px;">這份地中海門徒與早期使徒宣教路徑互動地圖的內容，是依據新約聖經經文、早期教會史文獻，以及學界與教會傳統的年代學／地理推估整理而成，而非直接調用某個外部即時資料庫。</p>
+      <div style="margin-bottom: 6px;">
+        <div style="font-weight: 700; color: var(--text-primary);">1. 正典經文依據（新約聖經）</div>
+        <ul style="margin: 2px 0 0 20px;">
+          <li>歷史行程與關鍵事件：主要參考《使徒行傳》（例如保羅的歸信、安提阿教會與宣教旅程、哥林多與以弗所事工、羅馬軟禁；彼得與約翰在耶路撒冷與撒馬利亞的見證；腓力在撒馬利亞、往迦薩路上與該撒利亞的記載；雅各在耶路撒冷會議的角色；馬可在耶路撒冷與初期同工線索）。</li>
+          <li>書信與啟示錄線索：結合《加拉太書》（如保羅三年沉潛與安提阿共餐事件、教會「柱石」）、《羅馬書》（保羅往西班牙的心願）、《哥林多前書》（向雅各顯現）、《歌羅西書》《腓利門書》《提摩太後書》（馬可與保羅晚期同工）、《彼得前書》（「在巴比倫的教會」與「我兒子馬可」），以及《啟示錄》（約翰在拔摩海島）。</li>
+        </ul>
+      </div>
+      <div style="margin-bottom: 6px;">
+        <div style="font-weight: 700; color: var(--text-primary);">2. 早期教會史與傳統推估參照</div>
+        <ul style="margin: 2px 0 0 20px;">
+          <li>早期教會文獻與教父記載：參考如羅馬革利免一書、愛任紐《反異端》、優西比烏《教會史》等早期教會傳統，作為虛線「傳統推估」路線的參照（例如保羅西行西班牙傳統、彼得晚年羅馬傳統、約翰晚年以弗所傳統、馬可在亞歷山卓建立教會傳統、安得烈與多馬的北方／東方傳道傳統）。</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-weight: 700; color: var(--text-primary);">3. 視覺化與量化設定的說明</div>
+        <ul style="margin: 2px 0 0 20px;">
+          <li>西元起訖年份（30–100 AD）與里程碑：屬於歷史年代學的主流推估區間與事件定位，古代文獻多半未記載精確逐年紀年。</li>
+          <li>停留月數與地圖座標：部分月數有經文時間線索（如哥林多「一年零六個月」、羅馬租屋處「足足兩年」），其餘多為方便「各地停留時間比較」長條圖呈現而設定的估算或示意數值；部分站點在地圖上也會借用區域座標呈現，並在敘事的「考據與年代說明」「停留月數說明」中註明出處與性質。</li>
+        </ul>
+      </div>
+    </footer>
   </div>
 
   <script>
@@ -1621,7 +1647,9 @@
         <div class="narrative-heading">${stop.title}</div>
         <p>${stop.desc}</p>
         <div style="margin-top:10px; padding:10px 12px; border-radius:8px; background:rgba(15,23,42,0.55); border:1px solid var(--border-subtle); font-size:14.5px; color:var(--text-secondary);">
-          <div><strong style="color:#f8fafc;">資料來源與考據說明：</strong>本互動地圖依據新約正典（《使徒行傳》、書信與《啟示錄》）及羅馬革利免一書、愛任紐、優西比烏等早期教會傳統整理，並結合主流年代推估與視覺化估算設定。本站點依據／出處：${stop.ref}；${stop.basisNote || ""} ${stop.durationBasis || ""}</div>
+          <div style="margin-bottom:4px;"><strong style="color:#f8fafc;">經文／文獻出處：</strong>${stop.ref}</div>
+          <div style="margin-bottom:4px;"><strong style="color:#f8fafc;">考據與年代說明：</strong>${stop.basisNote || ""}</div>
+          <div><strong style="color:#f8fafc;">停留月數說明：</strong>${stop.durationBasis || ""}</div>
         </div>
         ${concurrentHtml}
       `;
