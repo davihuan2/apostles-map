@@ -459,6 +459,95 @@
       margin-bottom: 6px;
     }
 
+    /* 多選同期行動對照區 */
+    .concurrent-section {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border-subtle);
+    }
+
+    .concurrent-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .concurrent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 8px;
+    }
+
+    .concurrent-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-left: 4px solid var(--accent-cyan);
+      border-radius: 9px;
+      padding: 9px 12px;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+
+    .concurrent-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-strong);
+    }
+
+    .concurrent-card.inactive-period {
+      opacity: 0.72;
+      border-left-style: dashed;
+    }
+
+    .concurrent-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+
+    .concurrent-status-tag {
+      font-size: 11.5px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-active-year {
+      background: rgba(34, 197, 94, 0.18);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+
+    .status-nearest-year {
+      background: rgba(148, 163, 184, 0.16);
+      color: var(--text-muted);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+    }
+
+    .concurrent-sub {
+      font-size: 13px;
+      color: var(--accent-gold);
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .concurrent-desc {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.48;
+    }
+
     /* 5. 各地停留時間比較（月數） */
     .bottom-duration-panel {
       background: var(--bg-panel);
@@ -640,6 +729,10 @@
 
       .legend-hud {
         display: none;
+      }
+
+      .concurrent-grid {
+        grid-template-columns: 1fr;
       }
 
       .duration-list {
@@ -937,6 +1030,26 @@
       }
     }
 
+    function findBestStopForYear(stops, targetYear) {
+      if (!stops || stops.length === 0) return null;
+      // 1. 優先找包含 targetYear 的區間 [start, end]
+      const exactIdx = stops.findIndex(st => targetYear >= st.start && targetYear <= st.end);
+      if (exactIdx !== -1) {
+        return { stop: stops[exactIdx], index: exactIdx, mode: "active" };
+      }
+      // 2. 否則找已開始且最接近 targetYear 的站點
+      let bestIdx = 0;
+      let bestScore = Infinity;
+      stops.forEach((st, idx) => {
+        const dist = targetYear < st.start ? (st.start - targetYear) + 100 : Math.abs(targetYear - st.end);
+        if (dist < bestScore) {
+          bestScore = dist;
+          bestIdx = idx;
+        }
+      });
+      return { stop: stops[bestIdx], index: bestIdx, mode: "nearest" };
+    }
+
     function renderPills() {
       pillsContainer.innerHTML = "";
       APOSTLES.forEach(ap => {
@@ -958,7 +1071,9 @@
           } else {
             state.selectedIds.add(ap.id);
             state.activeApostleId = ap.id;
-            state.selectedStopIndex = 0;
+            const stops = getFilteredStops(ap);
+            const matched = findBestStopForYear(stops, state.year);
+            state.selectedStopIndex = matched ? matched.index : 0;
           }
           ensureSelectionValid();
           renderAll();
@@ -971,8 +1086,10 @@
       APOSTLES.forEach(ap => state.selectedIds.add(ap.id));
       if (!state.activeApostleId || !state.selectedIds.has(state.activeApostleId)) {
         state.activeApostleId = APOSTLES[0].id;
-        state.selectedStopIndex = 0;
       }
+      const active = APOSTLES.find(a => a.id === state.activeApostleId);
+      const matched = active ? findBestStopForYear(getFilteredStops(active), state.year) : null;
+      state.selectedStopIndex = matched ? matched.index : 0;
       ensureSelectionValid();
       renderAll();
     });
@@ -1136,10 +1253,56 @@
       const sourceClass = stop.source === "canon" ? "pill-source-canon" : "pill-source-trad";
       const sourceLabel = stop.source === "canon" ? "正典／早期文獻記載" : "教會傳統推估（虛線）";
 
+      let concurrentHtml = "";
+      const others = selected.filter(a => a.id !== activeApostle.id);
+      if (others.length > 0) {
+        const refYear = state.year;
+        const cardsHtml = others.map(otherAp => {
+          const otherStops = getFilteredStops(otherAp);
+          const matched = findBestStopForYear(otherStops, refYear);
+          if (!matched) {
+            return `
+              <div class="concurrent-card inactive-period" style="border-left-color:${otherAp.color};">
+                <div class="concurrent-card-top">
+                  <span>${otherAp.name}</span>
+                  <span class="concurrent-status-tag status-nearest-year">無此類別站點</span>
+                </div>
+                <div class="concurrent-desc">目前來源篩選下無對應宣教站點紀錄。</div>
+              </div>
+            `;
+          }
+          const oStop = matched.stop;
+          const oCity = CITIES[oStop.city];
+          const isExact = matched.mode === "active";
+          return `
+            <div class="concurrent-card ${isExact ? "" : "inactive-period"}" style="border-left-color:${otherAp.color};" data-ap-id="${otherAp.id}" data-stop-idx="${matched.index}" data-start-year="${oStop.start}">
+              <div class="concurrent-card-top">
+                <span>${otherAp.name}・第 ${matched.index + 1} 站</span>
+                <span class="concurrent-status-tag ${isExact ? "status-active-year" : "status-nearest-year"}">
+                  ${isExact ? `${refYear} AD 同期` : `鄰近 ${oStop.start}–${oStop.end} AD`}
+                </span>
+              </div>
+              <div class="concurrent-sub">${oCity ? oCity.name : ""}（${oStop.start}–${oStop.end} AD｜約 ${oStop.months} 個月）</div>
+              <div class="concurrent-desc"><strong>${oStop.title}：</strong>${oStop.desc}</div>
+            </div>
+          `;
+        }).join("");
+
+        concurrentHtml = `
+          <div class="concurrent-section">
+            <div class="concurrent-title">
+              <span>其他已勾選使徒同期／相近階段行動（基準年份：${refYear} AD）</span>
+              <span style="font-size:12.5px; color:var(--text-muted); font-weight:500;">點擊卡片可切換為主焦點站點</span>
+            </div>
+            <div class="concurrent-grid">${cardsHtml}</div>
+          </div>
+        `;
+      }
+
       narrativeEl.innerHTML = `
         <div class="narrative-meta">
           <span class="pill-tag" style="background:${activeApostle.color}26; color:${activeApostle.color}; border-color:${activeApostle.color}88;">
-            ${activeApostle.name}・第 ${safeIdx + 1} 站
+            ${activeApostle.name}・第 ${safeIdx + 1} 站（主焦點）
           </span>
           <span class="pill-tag">${city ? city.name : ""}（約 ${stop.start}–${stop.end} AD）</span>
           <span class="pill-tag">停留約 ${stop.months} 個月</span>
@@ -1148,7 +1311,21 @@
         <div class="narrative-heading">${stop.title}</div>
         <p>${stop.desc}</p>
         <p style="margin-top:6px; font-size:14px; color:var(--text-muted);">文獻／經文依據：${stop.ref}</p>
+        ${concurrentHtml}
       `;
+
+      narrativeEl.querySelectorAll(".concurrent-card[data-ap-id]").forEach(card => {
+        card.addEventListener("click", () => {
+          const targetApId = card.dataset.apId;
+          const targetIdx = Number(card.dataset.stopIdx);
+          const targetStart = Number(card.dataset.startYear);
+          state.activeApostleId = targetApId;
+          state.selectedStopIndex = targetIdx;
+          state.year = targetStart;
+          yearSlider.value = targetStart;
+          renderAll();
+        });
+      });
     }
 
     function renderDurationChart() {
@@ -1284,7 +1461,13 @@
     });
 
     yearSlider.addEventListener("input", (e) => {
-      state.year = Number(e.target.value);
+      const newYear = Number(e.target.value);
+      state.year = newYear;
+      if (state.activeApostleId) {
+        const ap = APOSTLES.find(a => a.id === state.activeApostleId);
+        const matched = ap ? findBestStopForYear(getFilteredStops(ap), newYear) : null;
+        if (matched) state.selectedStopIndex = matched.index;
+      }
       renderAll();
     });
 
@@ -1293,6 +1476,11 @@
         const y = Number(btn.dataset.year);
         state.year = y;
         yearSlider.value = y;
+        if (state.activeApostleId) {
+          const ap = APOSTLES.find(a => a.id === state.activeApostleId);
+          const matched = ap ? findBestStopForYear(getFilteredStops(ap), y) : null;
+          if (matched) state.selectedStopIndex = matched.index;
+        }
         renderAll();
       });
     });
@@ -1325,6 +1513,11 @@
         }
         state.year += 1;
         yearSlider.value = state.year;
+        if (state.activeApostleId) {
+          const ap = APOSTLES.find(a => a.id === state.activeApostleId);
+          const matched = ap ? findBestStopForYear(getFilteredStops(ap), state.year) : null;
+          if (matched) state.selectedStopIndex = matched.index;
+        }
         renderAll();
       }, intervalMs);
     }
